@@ -4,17 +4,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Lunar\Base\Migration;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up()
     {
-        Schema::create($this->prefix.'product_reviews', function (Blueprint $table) {
+        Schema::create($this->prefix.'reviews', function (Blueprint $table) {
             $table->id();
 
             $table->morphs('purchasable');
             $table->userForeignKey();
             $table->tinyInteger('rating')->unsigned();
 
-            $table->text('message')->nullable();
+            $table->text('comment')->nullable();
 
             $table->datetime('published_at')->useCurrent()->nullable();
 
