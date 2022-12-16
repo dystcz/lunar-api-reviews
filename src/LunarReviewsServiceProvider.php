@@ -2,7 +2,9 @@
 
 namespace Dystcz\LunarReviews;
 
+use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
 use Illuminate\Support\ServiceProvider;
+use Lunar\Models\ProductVariant;
 
 class LunarReviewsServiceProvider extends ServiceProvider
 {
@@ -15,6 +17,8 @@ class LunarReviewsServiceProvider extends ServiceProvider
 
         // Register routes
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+
+        $this->dynamicRelations();
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -53,6 +57,13 @@ class LunarReviewsServiceProvider extends ServiceProvider
         // Register the main class to use with the facade
         $this->app->singleton('lunar-reviews', function () {
             return new LunarReviews;
+        });
+    }
+
+    protected function dynamicRelations(): void
+    {
+        ProductVariant::resolveRelationUsing('reviews', function ($model) {
+            return $model->morphMany(Review::class, 'purchasable');
         });
     }
 }
