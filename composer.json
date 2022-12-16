@@ -18,7 +18,8 @@
             "role": "Developer"
         }
     ],
-    "php": "^8.0",
+    "require": {
+        "php": "^8.0",
         "illuminate/support": "^8.0|^9.0",
         "laravel-json-api/laravel": "^2.4",
         "lunarphp/lunar": "^0.1",
