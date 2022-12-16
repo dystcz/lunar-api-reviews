@@ -11,17 +11,14 @@ class LunarReviewsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /*
-         * Optional methods to load your package assets
-         */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'lunar-reviews');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'lunar-reviews');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+
+        // Register routes
+        $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('lunar-reviews.php'),
+                __DIR__.'/../config/lunar-reviews.php' => config_path('lunar-reviews.php'),
             ], 'config');
 
             // Publishing the views.
@@ -50,7 +47,8 @@ class LunarReviewsServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'lunar-reviews');
+        $this->mergeConfigFrom(__DIR__.'/../config/lunar-reviews.php', 'lunar-reviews');
+        $this->mergeConfigFrom(__DIR__.'/../config/jsonapi.php', 'jsonapi');
 
         // Register the main class to use with the facade
         $this->app->singleton('lunar-reviews', function () {
