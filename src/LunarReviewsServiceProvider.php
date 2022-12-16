@@ -16,7 +16,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'lunar-reviews');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'lunar-reviews');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
