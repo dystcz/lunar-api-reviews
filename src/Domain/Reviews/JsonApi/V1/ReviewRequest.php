@@ -2,8 +2,10 @@
 
 namespace Dystcz\LunarReviews\Domain\Reviews\JsonApi\V1;
 
+use Illuminate\Validation\Rule;
 use LaravelJsonApi\Laravel\Http\Requests\ResourceRequest;
 use LaravelJsonApi\Validation\Rule as JsonApiRule;
+use Lunar\Models\ProductVariant;
 
 class ReviewRequest extends ResourceRequest
 {
@@ -14,11 +16,13 @@ class ReviewRequest extends ResourceRequest
      */
     public function rules(): array
     {
+        $productVariantMorphClass = (new ProductVariant())->getMorphClass();
+
         return [
             'rating' => ['required', 'integer'],
-            'comment' => ['required', 'string'],
+            'comment' => ['nullable', 'string'],
             'purchasable_id' => ['required', 'integer'],
-            'purchasable_type' => ['required', 'string'],
+            'purchasable_type' => ['required', 'string', Rule::in($productVariantMorphClass)],
             'published_at' => ['nullable', JsonApiRule::dateTime()],
         ];
     }
