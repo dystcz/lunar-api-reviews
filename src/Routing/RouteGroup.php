@@ -21,8 +21,6 @@ abstract class RouteGroup implements RouteGroupContract
      * RouteGroup constructor.
      *
      * @return void
-     *
-     * @throws BindingResolutionException
      */
     public function __construct()
     {

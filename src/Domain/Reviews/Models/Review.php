@@ -2,14 +2,22 @@
 
 namespace Dystcz\LunarReviews\Domain\Reviews\Models;
 
-use Dystcz\LunarReviews\Tests\Stubs\User;
+use Illuminate\Support\Facades\Config;
 use Lunar\Base\BaseModel;
 
 class Review extends BaseModel
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'rating',
+        'comment',
+        'published_at',
+        'purchasable_id',
+        'purchasable_type',
+    ];
 
-    protected $dates = ['published_at'];
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
 
     public function purchasable(): \Illuminate\Database\Eloquent\Relations\MorphTo
     {
@@ -22,7 +30,7 @@ class Review extends BaseModel
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(
-            config('auth.providers.users.model')
+            Config::get('auth.providers.users.model')
         );
     }
 }
