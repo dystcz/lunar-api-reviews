@@ -16,13 +16,11 @@ class ReviewRequest extends ResourceRequest
      */
     public function rules(): array
     {
-        $productVariantMorphClass = (new ProductVariant())->getMorphClass();
-
         return [
             'rating' => ['required', 'integer'],
             'comment' => ['nullable', 'string'],
             'purchasable_id' => ['required', 'integer'],
-            'purchasable_type' => ['required', 'string', Rule::in($productVariantMorphClass)],
+            'purchasable_type' => ['required', 'string'],
             'published_at' => ['nullable', JsonApiRule::dateTime()],
         ];
     }
