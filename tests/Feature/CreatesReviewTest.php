@@ -40,7 +40,7 @@ it('creates a review', function () {
 
     $this->assertDatabaseHas($review->getTable(), [
         'id' => $id,
-        'user_id' => $review->user_id,
+        'user_id' => $user->id,
         'purchasable_id' => $review->purchasable_id,
         'purchasable_type' => $review->purchasable_type,
         'comment' => $review->comment,

@@ -10,8 +10,6 @@ use Lunar\Hub\Database\Factories\StaffFactory;
 uses(TestCase::class, RefreshDatabase::class);
 
 it('can publish a review', function () {
-    $user = UserFactory::new()->create();
-
     $review = ReviewFactory::new()
         ->for(ProductVariantFactory::new(), 'purchasable')
         ->create([
@@ -21,7 +19,7 @@ it('can publish a review', function () {
     $self = "http://localhost/api/v1/reviews/{$review->getRouteKey()}/-actions/publish";
 
     $response = $this
-        ->actingAs($user)
+        ->actingAs($review->user)
         ->jsonApi()
         ->expects('reviews')
         ->post($self);
