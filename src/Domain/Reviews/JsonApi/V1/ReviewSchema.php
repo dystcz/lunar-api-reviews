@@ -9,6 +9,7 @@ use LaravelJsonApi\Eloquent\Fields\DateTime;
 use LaravelJsonApi\Eloquent\Fields\ID;
 use LaravelJsonApi\Eloquent\Fields\Number;
 use LaravelJsonApi\Eloquent\Fields\Relations\BelongsTo;
+use LaravelJsonApi\Eloquent\Fields\Relations\MorphTo;
 use LaravelJsonApi\Eloquent\Fields\Str;
 use LaravelJsonApi\Eloquent\Filters\WhereIdIn;
 use LaravelJsonApi\Eloquent\Pagination\PagePagination;
@@ -31,18 +32,6 @@ class ReviewSchema extends Schema
     public static string $model = Review::class;
 
     /**
-     * The relationships that should always be eager loaded.
-     *
-     * @return array
-     */
-    public function with(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    /**
      * Get the include paths supported by this resource.
      *
      * @return string[]|iterable
@@ -63,12 +52,17 @@ class ReviewSchema extends Schema
     {
         return [
             ID::make(),
+
             Str::make('comment'),
+            Number::make('rating')->sortable(),
+
             Number::make('purchasable_id'),
             Str::make('purchasable_type'),
-            Number::make('rating'),
-            DateTime::make('published_at'),
+
+            DateTime::make('published_at')->sortable(),
+
             BelongsTo::make('user'),
+            MorphTo::make('purchasable', 'reviews'),
         ];
     }
 
