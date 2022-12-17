@@ -35,7 +35,7 @@ class ReviewPolicy
     }
 
      /**
-      * Determine whether the user can delete the model.
+      * Determine whether the user can update the model.
       */
      public function update(Authenticatable $user, Review $review): bool
      {
@@ -46,6 +46,22 @@ class ReviewPolicy
       * Determine whether the user can delete the model.
       */
      public function delete(Authenticatable $user, Review $review): bool
+     {
+         return $this->update($user, $review);
+     }
+
+     /**
+      * Determine whether the user can publish the review.
+      */
+     public function publish(Authenticatable $user, Review $review): bool
+     {
+         return $this->update($user, $review);
+     }
+
+     /**
+      * Determine whether the user can unpublish the review.
+      */
+     public function unpublish(Authenticatable $user, Review $review): bool
      {
          return $this->update($user, $review);
      }

@@ -15,7 +15,7 @@ class PublishReviewsController extends Controller
         Request $query,
         Review $review
     ): DataResponse {
-        $this->authorize('update', $review);
+        $this->authorize('publish', $review);
 
         abort_if($review->published_at, 403, 'Review is already published.');
 
@@ -35,7 +35,7 @@ class PublishReviewsController extends Controller
         Request $query,
         Review $review
     ) {
-        $this->authorize('update', $review);
+        $this->authorize('unpublish', $review);
 
         abort_if(! $review->published_at, 403, 'Review is already unpublished.');
 
