@@ -4,12 +4,18 @@ namespace Dystcz\LunarReviews\Tests;
 
 use Cartalyst\Converter\Laravel\ConverterServiceProvider;
 use Dystcz\LunarReviews\LunarReviewsServiceProvider;
+use Dystcz\LunarReviews\Tests\Stubs\JsonApi\Server;
+use Dystcz\LunarReviews\Tests\Stubs\ProductVariants\ProductVariantRouteGroup;
+use Dystcz\LunarReviews\Tests\Stubs\Users\User;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Foundation\Application;
 use Kalnoy\Nestedset\NestedSetServiceProvider;
-use LaravelJsonApi\Encoder\Neomerx\ServiceProvider;
-use LaravelJsonApi\Laravel\ServiceProvider as LaravelJsonApiServiceProvider;
+use LaravelJsonApi\Spec\ServiceProvider;
 use LaravelJsonApi\Testing\MakesJsonApiRequests;
+use LaravelJsonApi\Testing\TestExceptionHandler;
+use Livewire\LivewireServiceProvider;
 use Lunar\Database\Factories\LanguageFactory;
-use Lunar\Hub\Tests\Stubs\User;
+use Lunar\Hub\AdminHubServiceProvider;
 use Lunar\LunarServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\Activitylog\ActivitylogServiceProvider;
@@ -29,22 +35,33 @@ abstract class TestCase extends Orchestra
             'name' => 'English',
         ]);
 
-        config()->set('providers.users.model', User::class);
+        config()->set('auth.providers.users.model', User::class);
 
         activity()->disableLogging();
     }
 
     /**
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      * @return array
      */
     protected function getPackageProviders($app)
     {
-        return [
-            LunarReviewsServiceProvider::class,
-            ServiceProvider::class,
-            LaravelJsonApiServiceProvider::class,
+        config()->set('jsonapi.servers.v1', Server::class);
 
+        return [
+            // Lunar Reviews
+            LunarReviewsServiceProvider::class,
+
+            // Laravel JsonApi
+            \LaravelJsonApi\Encoder\Neomerx\ServiceProvider::class,
+            \LaravelJsonApi\Laravel\ServiceProvider::class,
+            ServiceProvider::class,
+
+            // Lunar Hub
+            AdminHubServiceProvider::class,
+            LivewireServiceProvider::class,
+
+            // Lunar core
             LunarServiceProvider::class,
             MediaLibraryServiceProvider::class,
             ActivitylogServiceProvider::class,
@@ -55,7 +72,7 @@ abstract class TestCase extends Orchestra
     }
 
     /**
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      */
     public function getEnvironmentSetUp($app)
     {
@@ -68,5 +85,34 @@ abstract class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix' => '',
         ]);
+    }
+
+    protected function resolveApplicationExceptionHandler($app): void
+    {
+        $app->singleton(
+            ExceptionHandler::class,
+            TestExceptionHandler::class
+        );
+    }
+
+    /**
+     * Define database migrations.
+     *
+     * @return void
+     */
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadLaravelMigrations();
+    }
+
+    /**
+     * Define routes setup.
+     *
+     * @param  \Illuminate\Routing\Router  $router
+     * @return void
+     */
+    protected function defineRoutes($router)
+    {
+        (new ProductVariantRouteGroup)();
     }
 }

@@ -1,0 +1,25 @@
+<?php
+
+namespace Dystcz\LunarReviews\Domain\Reviews\JsonApi\V1;
+
+use LaravelJsonApi\Laravel\Http\Requests\ResourceRequest;
+use LaravelJsonApi\Validation\Rule as JsonApiRule;
+
+class ReviewRequest extends ResourceRequest
+{
+    /**
+     * Get the validation rules for the resource.
+     *
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            'rating' => ['required', 'integer'],
+            'comment' => ['required', 'string'],
+            'purchasable_id' => ['required', 'integer'],
+            'purchasable_type' => ['required', 'string'],
+            'published_at' => ['nullable', JsonApiRule::dateTime()],
+        ];
+    }
+}

@@ -3,11 +3,16 @@
 namespace Dystcz\LunarReviews;
 
 use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
+use Dystcz\LunarReviews\Domain\Reviews\Policies\ReviewPolicy;
 use Illuminate\Support\ServiceProvider;
 use Lunar\Models\ProductVariant;
 
 class LunarReviewsServiceProvider extends ServiceProvider
 {
+    protected array $policies = [
+        Review::class => ReviewPolicy::class,
+    ];
+
     /**
      * Bootstrap the application services.
      */

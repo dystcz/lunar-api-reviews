@@ -3,6 +3,8 @@
 namespace Dystcz\LunarReviews\Domain\JsonApi\V1;
 
 use Dystcz\LunarReviews\Domain\Reviews\JsonApi\V1\ReviewSchema;
+use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use LaravelJsonApi\Core\Server\Server as BaseServer;
 use LaravelJsonApi\Core\Support\AppResolver;
@@ -29,7 +31,9 @@ class Server extends BaseServer
      */
     public function serving(): void
     {
-        // no-op
+        Review::creating(static function (Review $review): void {
+            $review->user()->associate(Auth::user());
+        });
     }
 
     /**
@@ -42,16 +46,5 @@ class Server extends BaseServer
         return [
             ReviewSchema::class,
         ];
-    }
-
-    /**
-     * Determine if the server is authorizable.
-     *
-     * @return bool
-     */
-    public function authorizable(): bool
-    {
-        // TODO: Write policies
-        return false;
     }
 }

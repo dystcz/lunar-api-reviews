@@ -13,8 +13,8 @@ return new class extends Migration
 
             $table->morphs('purchasable');
             $table->userForeignKey();
-            $table->tinyInteger('rating')->unsigned();
 
+            $table->tinyInteger('rating')->unsigned();
             $table->text('comment')->nullable();
 
             $table->datetime('published_at')->useCurrent()->nullable();
