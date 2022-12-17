@@ -25,6 +25,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('lunar_product_reviews');
+        Schema::dropIfExists($this->prefix.'reviews');
     }
 };
