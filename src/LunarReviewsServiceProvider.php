@@ -24,8 +24,6 @@ class LunarReviewsServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadViewsFrom(__DIR__.'/Hub/resources/views', 'lunar-reviews');
-
-        // Register routes
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
         $this->registerDynamicRelations();
@@ -39,23 +37,9 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 __DIR__.'/../config/lunar-reviews.php' => config_path('lunar-reviews.php'),
             ], 'config');
 
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/lunar-reviews'),
-            ], 'views');*/
-
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/lunar-reviews'),
-            ], 'assets');*/
-
-            // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/lunar-reviews'),
-            ], 'lang');*/
-
-            // Registering package commands.
-            // $this->commands([]);
+            $this->publishes([
+                __DIR__.'/Hub/resources/views' => resource_path('views/vendor/lunar-reviews'),
+            ], 'views');
         }
     }
 

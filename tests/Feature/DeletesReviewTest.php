@@ -30,7 +30,7 @@ it('deletes a review', function () {
 });
 
 it('allows only admin or owner to delete a review', function () {
-    // delte review as random user
+    // delete review as random user
     $randomUser = UserFactory::new()->create();
     $reviewOwner = UserFactory::new()->create();
 
