@@ -10,12 +10,12 @@ use Dystcz\LunarReviews\Tests\Stubs\Users\User;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Application;
 use Kalnoy\Nestedset\NestedSetServiceProvider;
-use LaravelJsonApi\Spec\ServiceProvider;
 use LaravelJsonApi\Testing\MakesJsonApiRequests;
 use LaravelJsonApi\Testing\TestExceptionHandler;
 use Livewire\LivewireServiceProvider;
 use Lunar\Database\Factories\LanguageFactory;
 use Lunar\Hub\AdminHubServiceProvider;
+use Lunar\LivewireTables\LivewireTablesServiceProvider;
 use Lunar\LunarServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\Activitylog\ActivitylogServiceProvider;
@@ -55,11 +55,14 @@ abstract class TestCase extends Orchestra
             // Laravel JsonApi
             \LaravelJsonApi\Encoder\Neomerx\ServiceProvider::class,
             \LaravelJsonApi\Laravel\ServiceProvider::class,
-            ServiceProvider::class,
+            \LaravelJsonApi\Spec\ServiceProvider::class,
+
+            // Livewire
+            LivewireTablesServiceProvider::class,
+            LivewireServiceProvider::class,
 
             // Lunar Hub
             AdminHubServiceProvider::class,
-            LivewireServiceProvider::class,
 
             // Lunar core
             LunarServiceProvider::class,

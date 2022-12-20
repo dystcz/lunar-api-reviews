@@ -38,4 +38,14 @@ class ProductVariantSchema extends Schema
     {
         return 'variants';
     }
+
+    /**
+     * Determine if the resource is authorizable.
+     *
+     * @return bool
+     */
+    public function authorizable(): bool
+    {
+        return false;
+    }
 }

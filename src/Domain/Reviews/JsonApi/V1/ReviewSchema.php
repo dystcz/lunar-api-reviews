@@ -3,6 +3,8 @@
 namespace Dystcz\LunarReviews\Domain\Reviews\JsonApi\V1;
 
 use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use LaravelJsonApi\Eloquent\Contracts\Paginator;
 use LaravelJsonApi\Eloquent\Fields\DateTime;
@@ -30,6 +32,18 @@ class ReviewSchema extends Schema
      * @var string
      */
     public static string $model = Review::class;
+
+    /**
+     * Build an index query for this resource.
+     *
+     * @param  Request|null  $request
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function indexQuery(?Request $request, Builder $query): Builder
+    {
+        return $query->published();
+    }
 
     /**
      * Get the include paths supported by this resource.

@@ -2,6 +2,7 @@
 
 namespace Dystcz\LunarReviews\Domain\Reviews\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 use Lunar\Base\BaseModel;
 
@@ -24,13 +25,15 @@ class Review extends BaseModel
         return $this->morphTo();
     }
 
-    /**
-     * Return the user relationship.
-     */
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(
             Config::get('auth.providers.users.model')
         );
+    }
+
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->whereNotNull('published_at');
     }
 }
