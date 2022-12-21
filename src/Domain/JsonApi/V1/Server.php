@@ -25,18 +25,6 @@ class Server extends BaseServer
     }
 
     /**
-     * Bootstrap the server when it is handling an HTTP request.
-     *
-     * @return void
-     */
-    public function serving(): void
-    {
-        Review::creating(static function (Review $review): void {
-            $review->user()->associate(Auth::user());
-        });
-    }
-
-    /**
      * Get the server's list of schemas.
      *
      * @return array
