@@ -2,26 +2,23 @@
 
 namespace Dystcz\LunarReviews\Domain\JsonApi\V1;
 
+use Dystcz\LunarApi\Domain\JsonApi\Servers\Server as BaseServer;
 use Dystcz\LunarReviews\Domain\Reviews\JsonApi\V1\ReviewSchema;
-use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use LaravelJsonApi\Core\Server\Server as BaseServer;
-use LaravelJsonApi\Core\Support\AppResolver;
 
 class Server extends BaseServer
 {
     /**
-     * Server constructor.
+     * Set base server URI.
      *
-     * @param  AppResolver  $app
-     * @param  string  $name
+     * @param string $path
+     * @return void
      */
-    public function __construct(AppResolver $app, string $name)
+    protected function setBaseUri(string $path = 'v1'): void
     {
-        $this->baseUri = '/'.Config::get('lunar-reviews.route_prefix').'/v1';
+        $prefix = Config::get('lunar-api.route_prefix');
 
-        parent::__construct($app, $name);
+        $this->baseUri = "/{$prefix}/{$path}";
     }
 
     /**
