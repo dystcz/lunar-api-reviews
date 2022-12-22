@@ -71,10 +71,10 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 'product_id',
                 'purchasable_id'
             )
-            ->where(
-                'purchasable_type',
-                ProductVariant::class
-            );
+                ->where(
+                    'purchasable_type',
+                    ProductVariant::class
+                );
         });
     }
 }

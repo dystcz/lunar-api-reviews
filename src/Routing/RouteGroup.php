@@ -14,7 +14,7 @@ abstract class RouteGroup implements RouteGroupContract
     /** @var array */
     public array $middleware = [];
 
-    /** @var \Illuminate\Routing\Router */
+    /** @var Router */
     protected Router $router;
 
     /**

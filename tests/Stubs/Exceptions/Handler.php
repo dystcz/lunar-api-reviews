@@ -4,6 +4,7 @@ namespace Dystcz\LunarReviews\Tests\Stubs\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use LaravelJsonApi\Core\Exceptions\JsonApiException;
+use LaravelJsonApi\Exceptions\ExceptionParser;
 
 class Handler extends ExceptionHandler
 {
@@ -24,7 +25,7 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(
-            \LaravelJsonApi\Exceptions\ExceptionParser::make()->renderable()
+            ExceptionParser::make()->renderable()
         );
     }
 }

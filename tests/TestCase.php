@@ -9,7 +9,9 @@ use Dystcz\LunarReviews\Tests\Stubs\ProductVariants\ProductVariantRouteGroup;
 use Dystcz\LunarReviews\Tests\Stubs\Users\User;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Application;
+use Illuminate\Routing\Router;
 use Kalnoy\Nestedset\NestedSetServiceProvider;
+use LaravelJsonApi\Spec\ServiceProvider;
 use LaravelJsonApi\Testing\MakesJsonApiRequests;
 use LaravelJsonApi\Testing\TestExceptionHandler;
 use Livewire\LivewireServiceProvider;
@@ -55,7 +57,7 @@ abstract class TestCase extends Orchestra
             // Laravel JsonApi
             \LaravelJsonApi\Encoder\Neomerx\ServiceProvider::class,
             \LaravelJsonApi\Laravel\ServiceProvider::class,
-            \LaravelJsonApi\Spec\ServiceProvider::class,
+            ServiceProvider::class,
 
             // Livewire
             LivewireTablesServiceProvider::class,
@@ -111,7 +113,7 @@ abstract class TestCase extends Orchestra
     /**
      * Define routes setup.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  Router  $router
      * @return void
      */
     protected function defineRoutes($router)
