@@ -924,12 +924,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dystcz/lunar-api.git",
-                "reference": "1285cba9c2ff472e35da2a00910d72532560533c"
+                "reference": "2c914d887c3271224f7ef8e28f05937d403d343c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dystcz/lunar-api/zipball/1285cba9c2ff472e35da2a00910d72532560533c",
-                "reference": "1285cba9c2ff472e35da2a00910d72532560533c",
+                "url": "https://api.github.com/repos/dystcz/lunar-api/zipball/2c914d887c3271224f7ef8e28f05937d403d343c",
+                "reference": "2c914d887c3271224f7ef8e28f05937d403d343c",
                 "shasum": ""
             },
             "require": {
@@ -993,7 +993,7 @@
                 "issues": "https://github.com/dystcz/lunar-api/issues",
                 "source": "https://github.com/dystcz/lunar-api/tree/main"
             },
-            "time": "2022-12-22T09:57:01+00:00"
+            "time": "2022-12-22T10:11:03+00:00"
         },
         {
             "name": "egulias/email-validator",
