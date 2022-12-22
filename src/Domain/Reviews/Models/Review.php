@@ -56,7 +56,7 @@ class Review extends BaseModel
     /**
      * Scope published reviews.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopePublished(Builder $query): Builder

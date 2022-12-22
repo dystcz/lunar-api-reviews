@@ -15,7 +15,7 @@ beforeEach(function () {
     ]);
 });
 
-test('product_show_page_contains_reviews_slot_component', function () {
+test('product show page contains reviews slot component', function () {
     $product = ProductFactory::new()
         ->has(ProductVariantFactory::new(), 'variants')
         ->create();

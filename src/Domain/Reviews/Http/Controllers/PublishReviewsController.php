@@ -6,6 +6,7 @@ use Dystcz\LunarReviews\Controller;
 use Dystcz\LunarReviews\Domain\Reviews\JsonApi\V1\ReviewSchema;
 use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use LaravelJsonApi\Core\Responses\DataResponse;
 
 class PublishReviewsController extends Controller
@@ -34,7 +35,7 @@ class PublishReviewsController extends Controller
         ReviewSchema $schema,
         Request $query,
         Review $review
-    ) {
+    ): Response {
         $this->authorize('unpublish', $review);
 
         abort_if(! $review->published_at, 403, 'Review is already unpublished.');
