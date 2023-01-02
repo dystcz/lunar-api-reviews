@@ -51,11 +51,6 @@ class LunarReviewsServiceProvider extends ServiceProvider
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__.'/../config/lunar-reviews.php', 'lunar-reviews');
         $this->mergeConfigFrom(__DIR__.'/../config/jsonapi.php', 'jsonapi');
-
-        // Register the main class to use with the facade
-        $this->app->singleton('lunar-reviews', function () {
-            return new LunarReviews;
-        });
     }
 
     protected function registerDynamicRelations(): void

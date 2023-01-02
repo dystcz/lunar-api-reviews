@@ -28,4 +28,6 @@ return [
             'pagination' => 12,
         ],
     ],
+
+    'auth_middleware' => 'auth',
 ];
