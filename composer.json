@@ -61,10 +61,7 @@
         "laravel": {
             "providers": [
                 "Dystcz\\LunarReviews\\LunarReviewsServiceProvider"
-            ],
-            "aliases": {
-                "LunarReviews": "Dystcz\\LunarReviews\\LunarReviewsFacade"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",

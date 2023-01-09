@@ -2,10 +2,18 @@
 
 namespace Dystcz\LunarReviews;
 
+use Dystcz\LunarApi\Domain\JsonApi\Extensions\Resource\ResourceManifest;
+use Dystcz\LunarApi\Domain\JsonApi\Extensions\Schema\SchemaManifest;
+use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductResource;
+use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductSchema;
+use Dystcz\LunarApi\Domain\ProductVariants\Http\Resources\ProductVariantResource;
+use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantSchema;
 use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarReviews\Domain\Reviews\Policies\ReviewPolicy;
 use Dystcz\LunarReviews\Hub\Components\Slots\ReviewsSlot;
 use Illuminate\Support\ServiceProvider;
+use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
+use LaravelJsonApi\Eloquent\Fields\Relations\HasManyThrough;
 use Livewire\Livewire;
 use Lunar\Hub\Facades\Slot;
 use Lunar\Models\Product;
@@ -50,7 +58,8 @@ class LunarReviewsServiceProvider extends ServiceProvider
     {
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__.'/../config/lunar-reviews.php', 'lunar-reviews');
-        $this->mergeConfigFrom(__DIR__.'/../config/jsonapi.php', 'jsonapi');
+
+        $this->extendSchemas();
     }
 
     protected function registerDynamicRelations(): void
@@ -71,5 +80,25 @@ class LunarReviewsServiceProvider extends ServiceProvider
                     ProductVariant::class
                 );
         });
+    }
+
+    protected function extendSchemas(): void
+    {
+        SchemaManifest::for(ProductSchema::class)->includePaths(['reviews', 'variants.reviews']);
+        SchemaManifest::for(ProductSchema::class)
+            ->fields([
+                HasManyThrough::make('reviews'),
+            ]);
+        ResourceManifest::for(ProductResource::class)
+            ->relationships(fn ($resource) => [$resource->relation('reviews')]);
+
+        SchemaManifest::for(ProductVariantSchema::class)
+            ->includePaths(['reviews']);
+        SchemaManifest::for(ProductVariantSchema::class)
+            ->fields([
+                HasMany::make('reviews'),
+            ]);
+        ResourceManifest::for(ProductVariantResource::class)
+            ->relationships(fn ($resource) => [$resource->relation('reviews')]);
     }
 }

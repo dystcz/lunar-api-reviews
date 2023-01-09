@@ -3,13 +3,12 @@
 namespace Dystcz\LunarReviews\Tests;
 
 use Cartalyst\Converter\Laravel\ConverterServiceProvider;
+use Dystcz\LunarApi\LunarApiServiceProvider;
 use Dystcz\LunarReviews\LunarReviewsServiceProvider;
-use Dystcz\LunarReviews\Tests\Stubs\JsonApi\Server;
-use Dystcz\LunarReviews\Tests\Stubs\ProductVariants\ProductVariantRouteGroup;
+use Dystcz\LunarReviews\Tests\Stubs\JsonApi\V1\Server;
 use Dystcz\LunarReviews\Tests\Stubs\Users\User;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Application;
-use Illuminate\Routing\Router;
 use Kalnoy\Nestedset\NestedSetServiceProvider;
 use LaravelJsonApi\Spec\ServiceProvider;
 use LaravelJsonApi\Testing\MakesJsonApiRequests;
@@ -48,9 +47,12 @@ abstract class TestCase extends Orchestra
      */
     protected function getPackageProviders($app)
     {
-        config()->set('jsonapi.servers.v1', Server::class);
+        config()->set('lunar-api.additional_servers', [Server::class]);
 
         return [
+            // Lunar Api
+            LunarApiServiceProvider::class,
+
             // Lunar Reviews
             LunarReviewsServiceProvider::class,
 
@@ -108,16 +110,5 @@ abstract class TestCase extends Orchestra
     protected function defineDatabaseMigrations(): void
     {
         $this->loadLaravelMigrations();
-    }
-
-    /**
-     * Define routes setup.
-     *
-     * @param  Router  $router
-     * @return void
-     */
-    protected function defineRoutes($router)
-    {
-        (new ProductVariantRouteGroup)();
     }
 }

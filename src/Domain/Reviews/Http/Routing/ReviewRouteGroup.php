@@ -2,9 +2,13 @@
 
 namespace Dystcz\LunarReviews\Domain\Reviews\Http\Routing;
 
+use Dystcz\LunarApi\Domain\Products\Http\Controllers\ProductsController;
+use Dystcz\LunarApi\Domain\Products\Http\Routing\ProductRouteGroup;
+use Dystcz\LunarApi\Routing\RouteGroup;
+use Dystcz\LunarReviews\Domain\ProductVariants\Http\Controllers\ProductVariantsController;
 use Dystcz\LunarReviews\Domain\Reviews\Http\Controllers\PublishReviewsController;
 use Dystcz\LunarReviews\Domain\Reviews\Http\Controllers\ReviewsController;
-use Dystcz\LunarReviews\Routing\RouteGroup;
+use Illuminate\Support\Facades\App;
 use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
 
 class ReviewRouteGroup extends RouteGroup
@@ -36,6 +40,16 @@ class ReviewRouteGroup extends RouteGroup
                         $actions->withId()->post('publish');
                         $actions->withId()->delete('unpublish');
                     });
+
+                $server->resource(App::make(ProductRouteGroup::class)->getPrefix(), ProductsController::class)
+                    ->relationships(function ($relationships) {
+                        $relationships->hasMany('reviews')->readOnly();
+                    })->only();
+
+                $server->resource('variants', ProductVariantsController::class)
+                    ->relationships(function ($relationships) {
+                        $relationships->hasMany('reviews')->readOnly();
+                    })->only();
             });
     }
 }

@@ -35,7 +35,7 @@ it('creates a review', function () {
         ->post('/api/v1/reviews');
 
     $id = $response
-        ->assertCreatedWithServerId('//v1/reviews', $data)
+        ->assertCreatedWithServerId('http://localhost/api/v1/reviews', $data)
         ->id();
 
     $this->assertDatabaseHas($review->getTable(), [
