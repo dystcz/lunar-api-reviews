@@ -7,6 +7,8 @@ use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Domain\Reviews\Policies\ReviewPolicy;
 use Dystcz\LunarApiReviews\Hub\Components\Slots\ReviewsSlot;
 use Illuminate\Support\ServiceProvider;
+use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
+use LaravelJsonApi\Eloquent\Fields\Relations\HasManyThrough;
 use Livewire\Livewire;
 use Lunar\Hub\Facades\Slot;
 use Lunar\Models\Product;
@@ -52,10 +54,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__.'/../config/lunar-reviews.php', 'lunar-reviews');
 
-        // Register the main class to use with the facade
-        $this->app->singleton('lunar-reviews', function () {
-            return new LunarReviews;
-        });
+        $this->extendSchemas();
     }
 
     protected function registerDynamicRelations(): void
@@ -71,10 +70,30 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 'product_id',
                 'purchasable_id'
             )
-            ->where(
-                'purchasable_type',
-                ProductVariant::class
-            );
+                ->where(
+                    'purchasable_type',
+                    ProductVariant::class
+                );
         });
+    }
+
+    protected function extendSchemas(): void
+    {
+        SchemaManifest::for(ProductSchema::class)->includePaths(['reviews', 'variants.reviews']);
+        SchemaManifest::for(ProductSchema::class)
+            ->fields([
+                HasManyThrough::make('reviews'),
+            ]);
+        ResourceManifest::for(ProductResource::class)
+            ->relationships(fn ($resource) => [$resource->relation('reviews')]);
+
+        SchemaManifest::for(ProductVariantSchema::class)
+            ->includePaths(['reviews']);
+        SchemaManifest::for(ProductVariantSchema::class)
+            ->fields([
+                HasMany::make('reviews'),
+            ]);
+        ResourceManifest::for(ProductVariantResource::class)
+            ->relationships(fn ($resource) => [$resource->relation('reviews')]);
     }
 }

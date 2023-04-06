@@ -43,7 +43,7 @@ it('allows only admin or owner to delete a review', function () {
         ->actingAs($randomUser)
         ->jsonApi()
         ->delete('/api/v1/reviews/'.$review->getRouteKey());
-
+    
     $response->assertErrorStatus([
         'detail' => 'This action is unauthorized.',
         'status' => '403',

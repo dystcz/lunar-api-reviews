@@ -38,13 +38,16 @@ abstract class TestCase extends Orchestra
         Config::set('lunar-api.additional_servers', [Server::class]);
 
         return [
+            // Lunar Api
+            LunarApiServiceProvider::class,
+
             // Lunar Reviews
             LunarReviewsServiceProvider::class,
 
             // Laravel JsonApi
             \LaravelJsonApi\Encoder\Neomerx\ServiceProvider::class,
             \LaravelJsonApi\Laravel\ServiceProvider::class,
-            \LaravelJsonApi\Spec\ServiceProvider::class,
+            ServiceProvider::class,
 
             // Lunar Api
             \Dystcz\LunarApi\LunarApiServiceProvider::class,
@@ -96,16 +99,5 @@ abstract class TestCase extends Orchestra
     protected function defineDatabaseMigrations(): void
     {
         $this->loadLaravelMigrations();
-    }
-
-    /**
-     * Define routes setup.
-     *
-     * @param  \Illuminate\Routing\Router  $router
-     * @return void
-     */
-    protected function defineRoutes($router)
-    {
-        (new ProductVariantRouteGroup)();
     }
 }

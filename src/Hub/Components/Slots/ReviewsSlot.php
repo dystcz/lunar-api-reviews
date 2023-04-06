@@ -46,7 +46,7 @@ class ReviewsSlot extends Component implements AbstractSlot
         $this->slotModel = $model;
     }
 
-    public function toggle(Review $review)
+    public function toggle(Review $review): void
     {
         $review->update(['published_at' => $review->published_at ? null : now()]);
 

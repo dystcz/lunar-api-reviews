@@ -30,6 +30,16 @@ class ReviewRouteGroup extends RouteGroup
                         $actions->withId()->post('publish');
                         $actions->withId()->delete('unpublish');
                     });
+
+                $server->resource(App::make(ProductRouteGroup::class)->getPrefix(), ProductsController::class)
+                    ->relationships(function ($relationships) {
+                        $relationships->hasMany('reviews')->readOnly();
+                    })->only();
+
+                $server->resource('variants', ProductVariantsController::class)
+                    ->relationships(function ($relationships) {
+                        $relationships->hasMany('reviews')->readOnly();
+                    })->only();
             });
     }
 }

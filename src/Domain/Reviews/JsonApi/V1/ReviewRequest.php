@@ -15,7 +15,7 @@ class ReviewRequest extends ResourceRequest
     public function rules(): array
     {
         return [
-            'rating' => ['required', 'integer'],
+            'rating' => ['required', 'integer', 'min:1', 'max:5'],
             'comment' => ['nullable', 'string'],
             'purchasable_id' => ['required', 'integer'],
             'purchasable_type' => ['required', 'string'],
