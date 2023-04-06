@@ -1,6 +1,6 @@
 <?php
 
-namespace Dystcz\LunarReviews\Domain\ProductVariants\Http\Controllers;
+namespace Dystcz\LunarApiReviews\Domain\ProductVariants\Http\Controllers;
 
 use Dystcz\LunarApi\Controller;
 use LaravelJsonApi\Laravel\Http\Controllers\Actions;

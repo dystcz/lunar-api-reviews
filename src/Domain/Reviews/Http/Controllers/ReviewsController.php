@@ -3,6 +3,7 @@
 namespace Dystcz\LunarApiReviews\Domain\Reviews\Http\Controllers;
 
 use Dystcz\LunarApiReviews\Domain\Base\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Config;
 use LaravelJsonApi\Laravel\Http\Controllers\Actions;
 
 class ReviewsController extends Controller
@@ -14,6 +15,8 @@ class ReviewsController extends Controller
 
     public function __construct()
     {
-        $this->middleware(Config::get('lunar-reviews.auth_middleware'))->only('store');
+        $this->middleware(
+            Config::get('lunar-reviews.auth_middleware')
+        )->only('store');
     }
 }

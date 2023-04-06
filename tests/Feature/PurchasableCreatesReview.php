@@ -1,18 +1,18 @@
 <?php
 
-use Dystcz\LunarApiReviews\Domain\Reviews\Factories\ReviewFactory;
-use Dystcz\LunarApiReviews\Tests\Stubs\Users\UserFactory;
+use Dystcz\LunarApi\Domain\ProductVariants\Models\ProductVariant;
+use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
+use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
 use Dystcz\LunarApiReviews\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Lunar\Database\Factories\ProductVariantFactory;
 
 uses(TestCase::class, RefreshDatabase::class);
 
 it('can as purchasable read reviews', function () {
-    $user = UserFactory::new()->create();
+    $user = User::factory()->create();
 
-    $review = ReviewFactory::new()
-        ->for(ProductVariantFactory::new(), 'purchasable')
+    $review = Review::factory()
+        ->for(ProductVariant::factory(), 'purchasable')
         ->create();
 
     $response = $this

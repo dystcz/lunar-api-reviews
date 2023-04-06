@@ -2,25 +2,19 @@
 
 namespace Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants;
 
-use Dystcz\LunarApiReviews\Routing\RouteGroup;
+use Dystcz\LunarApi\Routing\RouteGroup;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
 
 class ProductVariantRouteGroup extends RouteGroup
 {
-    /** @var string */
     public string $prefix = 'variants';
 
-    /** @var array */
     public array $middleware = [];
 
     /**
      * Register routes.
-     *
-     * @param  null|string  $prefix
-     * @param  array|string  $middleware
-     * @return void
      */
     public function routes(?string $prefix = null, array|string $middleware = []): void
     {
@@ -31,7 +25,7 @@ class ProductVariantRouteGroup extends RouteGroup
             JsonApiRoute::server('v1')
                 ->prefix('v1')
                 ->resources(function ($server) {
-                    $server->resource($this->getPrefix(), VariantsController::class)
+                    $server->resource($this->getPrefix(), ProductVariantsController::class)
                         ->only('index', 'show')
                         ->relationships(function ($relations) {
                             $relations->hasMany('reviews');

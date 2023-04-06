@@ -4,8 +4,7 @@ namespace Dystcz\LunarApiReviews\Tests;
 
 use Dystcz\LunarApi\Tests\Stubs\Lunar\TestUrlGenerator;
 use Dystcz\LunarApiReviews\LunarReviewsServiceProvider;
-use Dystcz\LunarApiReviews\Tests\Stubs\JsonApi\Server;
-use Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants\ProductVariantRouteGroup;
+use Dystcz\LunarApiReviews\Tests\Stubs\JsonApi\V1\Server;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Application;
@@ -35,11 +34,9 @@ abstract class TestCase extends Orchestra
      */
     protected function getPackageProviders($app)
     {
-        Config::set('lunar-api.additional_servers', [Server::class]);
-
         return [
             // Lunar Api
-            LunarApiServiceProvider::class,
+            \Dystcz\LunarApi\LunarApiServiceProvider::class,
 
             // Lunar Reviews
             LunarReviewsServiceProvider::class,
@@ -47,10 +44,7 @@ abstract class TestCase extends Orchestra
             // Laravel JsonApi
             \LaravelJsonApi\Encoder\Neomerx\ServiceProvider::class,
             \LaravelJsonApi\Laravel\ServiceProvider::class,
-            ServiceProvider::class,
-
-            // Lunar Api
-            \Dystcz\LunarApi\LunarApiServiceProvider::class,
+            \LaravelJsonApi\Spec\ServiceProvider::class,
 
             // Livewire
             \Lunar\LivewireTables\LivewireTablesServiceProvider::class,
@@ -74,6 +68,10 @@ abstract class TestCase extends Orchestra
      */
     public function getEnvironmentSetUp($app)
     {
+        Config::set('lunar-api.additional_servers', [
+            Server::class,
+        ]);
+
         Config::set('database.default', 'sqlite');
 
         Config::set('database.migrations', 'migrations');

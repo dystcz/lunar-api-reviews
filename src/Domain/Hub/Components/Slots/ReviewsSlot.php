@@ -1,8 +1,10 @@
 <?php
 
-namespace Dystcz\LunarApiReviews\Hub\Components\Slots;
+namespace Dystcz\LunarApiReviews\Domain\Hub\Components\Slots;
 
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Lunar\Hub\Slots\AbstractSlot;
@@ -13,35 +15,35 @@ class ReviewsSlot extends Component implements AbstractSlot
     use HubSlot;
     use WithPagination;
 
-    public static function getName()
+    public static function getName(): string
     {
         return 'lunar-reviews::reviews-slot';
     }
 
-    public function getSlotHandle()
+    public function getSlotHandle(): string
     {
         return 'reviews-slot';
     }
 
-    public function getSlotInitialValue()
+    public function getSlotInitialValue(): void
     {
     }
 
-    public function getSlotPosition()
+    public function getSlotPosition(): string
     {
         return 'bottom';
     }
 
-    public function getSlotTitle()
+    public function getSlotTitle(): string
     {
         return 'Reviews';
     }
 
-    public function updateSlotModel()
+    public function updateSlotModel(): void
     {
     }
 
-    public function handleSlotSave($model, $data)
+    public function handleSlotSave($model, $data): void
     {
         $this->slotModel = $model;
     }
@@ -53,7 +55,7 @@ class ReviewsSlot extends Component implements AbstractSlot
         $this->setPage($this->page);
     }
 
-    public function render()
+    public function render(): View|Factory
     {
         return view('lunar-reviews::livewire.reviews-slot', [
             'reviews' => $this->slotModel->reviews()->paginate(10),

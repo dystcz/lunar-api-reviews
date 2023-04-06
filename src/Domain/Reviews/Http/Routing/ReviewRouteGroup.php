@@ -2,9 +2,13 @@
 
 namespace Dystcz\LunarApiReviews\Domain\Reviews\Http\Routing;
 
+use Dystcz\LunarApi\Domain\Products\Http\Controllers\ProductsController;
+use Dystcz\LunarApi\Domain\Products\Http\Routing\ProductRouteGroup;
+use Dystcz\LunarApi\Routing\RouteGroup;
+use Dystcz\LunarApiReviews\Domain\ProductVariants\Http\Controllers\ProductVariantsController;
 use Dystcz\LunarApiReviews\Domain\Reviews\Http\Controllers\PublishReviewsController;
 use Dystcz\LunarApiReviews\Domain\Reviews\Http\Controllers\ReviewsController;
-use Dystcz\LunarApiReviews\Routing\RouteGroup;
+use Illuminate\Support\Facades\App;
 use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
 
 class ReviewRouteGroup extends RouteGroup

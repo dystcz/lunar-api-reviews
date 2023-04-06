@@ -2,10 +2,15 @@
 
 namespace Dystcz\LunarApiReviews;
 
-use Dystcz\LunarApiReviews\Domain\Reviews\LunarReviews;
+use Dystcz\LunarApi\Domain\JsonApi\Extensions\Resource\ResourceManifest;
+use Dystcz\LunarApi\Domain\JsonApi\Extensions\Schema\SchemaManifest;
+use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductResource;
+use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductSchema;
+use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantResource;
+use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantSchema;
+use Dystcz\LunarApiReviews\Domain\Hub\Components\Slots\ReviewsSlot;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Domain\Reviews\Policies\ReviewPolicy;
-use Dystcz\LunarApiReviews\Hub\Components\Slots\ReviewsSlot;
 use Illuminate\Support\ServiceProvider;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasManyThrough;
@@ -26,7 +31,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->loadViewsFrom(__DIR__.'/Hub/resources/views', 'lunar-reviews');
+        $this->loadViewsFrom(__DIR__.'/Domain/Hub/resources/views', 'lunar-reviews');
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
         $this->registerDynamicRelations();
@@ -41,7 +46,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
             ], 'config');
 
             $this->publishes([
-                __DIR__.'/Hub/resources/views' => resource_path('views/vendor/lunar-reviews'),
+                __DIR__.'/Domain/Hub/resources/views' => resource_path('views/vendor/lunar-reviews'),
             ], 'views');
         }
     }
@@ -80,19 +85,23 @@ class LunarReviewsServiceProvider extends ServiceProvider
     protected function extendSchemas(): void
     {
         SchemaManifest::for(ProductSchema::class)->includePaths(['reviews', 'variants.reviews']);
+
         SchemaManifest::for(ProductSchema::class)
             ->fields([
                 HasManyThrough::make('reviews'),
             ]);
+
         ResourceManifest::for(ProductResource::class)
             ->relationships(fn ($resource) => [$resource->relation('reviews')]);
 
         SchemaManifest::for(ProductVariantSchema::class)
             ->includePaths(['reviews']);
+
         SchemaManifest::for(ProductVariantSchema::class)
             ->fields([
                 HasMany::make('reviews'),
             ]);
+
         ResourceManifest::for(ProductVariantResource::class)
             ->relationships(fn ($resource) => [$resource->relation('reviews')]);
     }

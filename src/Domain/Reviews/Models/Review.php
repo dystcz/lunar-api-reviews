@@ -2,7 +2,9 @@
 
 namespace Dystcz\LunarApiReviews\Domain\Reviews\Models;
 
+use Dystcz\LunarApiReviews\Domain\Reviews\Factories\ReviewFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +13,8 @@ use Lunar\Base\BaseModel;
 
 class Review extends BaseModel
 {
+    use HasFactory;
+
     protected $fillable = [
         'rating',
         'comment',
@@ -29,6 +33,14 @@ class Review extends BaseModel
         static::creating(static function (self $review): void {
             $review->user_id = $review->user_id ?: Auth::user()?->id;
         });
+    }
+
+    /**
+     * Return a new factory instance for the model.
+     */
+    protected static function newFactory(): ReviewFactory
+    {
+        return ReviewFactory::new();
     }
 
     /**

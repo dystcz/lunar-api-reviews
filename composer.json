@@ -68,7 +68,7 @@
                 "Dystcz\\LunarApiReviews\\LunarReviewsServiceProvider"
             ],
             "aliases": {
-                "LunarReviews": "Dystcz\\LunarApiReviews\\LunarReviewsFacade"
+                "LunarReviews": "Dystcz\\LunarApiReviews\\Domain\\Reviews\\Facades\\LunarApiReview"
             }
         }
     },

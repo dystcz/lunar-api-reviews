@@ -2,13 +2,13 @@
 
 use Dystcz\LunarApi\Domain\Products\Factories\ProductFactory;
 use Dystcz\LunarApi\Domain\ProductVariants\Factories\ProductVariantFactory;
-use Dystcz\LunarReviews\Domain\Reviews\Factories\ReviewFactory;
-use Dystcz\LunarReviews\Tests\TestCase;
+use Dystcz\LunarApiReviews\Domain\Reviews\Factories\ReviewFactory;
+use Dystcz\LunarApiReviews\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(TestCase::class, RefreshDatabase::class);
 
-it('extends ProductSchema', function () {
+it('reviews extend ProductSchema with reviews relationship', function () {
     $product = ProductFactory::new()
         ->has(
             ProductVariantFactory::new()
@@ -27,7 +27,7 @@ it('extends ProductSchema', function () {
     $response->assertFetchedMany($product->reviews);
 });
 
-it('extends ProductVariantSchema', function () {
+it('reviews extend ProductVariantSchema with reviews relationship', function () {
     $productVariant = ProductVariantFactory::new()
         ->has(ReviewFactory::new(), 'reviews')
         ->create();

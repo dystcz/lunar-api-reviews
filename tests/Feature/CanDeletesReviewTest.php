@@ -1,19 +1,19 @@
 <?php
 
-use Dystcz\LunarApiReviews\Domain\Reviews\Factories\ReviewFactory;
-use Dystcz\LunarApiReviews\Tests\Stubs\Users\UserFactory;
+use Dystcz\LunarApi\Domain\ProductVariants\Models\ProductVariant;
+use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
+use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
 use Dystcz\LunarApiReviews\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Lunar\Database\Factories\ProductVariantFactory;
-use Lunar\Hub\Database\Factories\StaffFactory;
+use Lunar\Hub\Models\Staff;
 
 uses(TestCase::class, RefreshDatabase::class);
 
-it('deletes a review', function () {
-    $user = UserFactory::new()->create();
+it('can delete a review', function () {
+    $user = User::factory()->create();
 
-    $review = ReviewFactory::new()
-        ->for(ProductVariantFactory::new(), 'purchasable')
+    $review = Review::factory()
+        ->for(ProductVariant::factory(), 'purchasable')
         ->for($user)
         ->create();
 
@@ -31,11 +31,11 @@ it('deletes a review', function () {
 
 it('allows only admin or owner to delete a review', function () {
     // delete review as random user
-    $randomUser = UserFactory::new()->create();
-    $reviewOwner = UserFactory::new()->create();
+    $randomUser = User::factory()->create();
+    $reviewOwner = User::factory()->create();
 
-    $review = ReviewFactory::new()
-        ->for(ProductVariantFactory::new(), 'purchasable')
+    $review = Review::factory()
+        ->for(ProductVariant::factory(), 'purchasable')
         ->for($reviewOwner)
         ->create();
 
@@ -43,7 +43,7 @@ it('allows only admin or owner to delete a review', function () {
         ->actingAs($randomUser)
         ->jsonApi()
         ->delete('/api/v1/reviews/'.$review->getRouteKey());
-    
+
     $response->assertErrorStatus([
         'detail' => 'This action is unauthorized.',
         'status' => '403',
@@ -51,7 +51,7 @@ it('allows only admin or owner to delete a review', function () {
     ]);
 
     // delete review as admin
-    $adminUser = StaffFactory::new()->create(['admin' => true]);
+    $adminUser = Staff::factory()->create(['admin' => true]);
 
     $response = $this
         ->actingAs($adminUser)

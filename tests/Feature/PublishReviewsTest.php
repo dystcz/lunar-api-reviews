@@ -1,16 +1,16 @@
 <?php
 
-use Dystcz\LunarApiReviews\Domain\Reviews\Factories\ReviewFactory;
+use Dystcz\LunarApi\Domain\ProductVariants\Models\ProductVariant;
+use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Lunar\Database\Factories\ProductVariantFactory;
-use Lunar\Hub\Database\Factories\StaffFactory;
+use Lunar\Hub\Models\Staff;
 
 uses(TestCase::class, RefreshDatabase::class);
 
 it('can publish a review', function () {
-    $review = ReviewFactory::new()
-        ->for(ProductVariantFactory::new(), 'purchasable')
+    $review = Review::factory()
+        ->for(ProductVariant::factory(), 'purchasable')
         ->create([
             'published_at' => null,
         ]);
@@ -32,10 +32,10 @@ it('can publish a review', function () {
 });
 
 it('can unpublish a review', function () {
-    $user = StaffFactory::new()->create(['admin' => true]);
+    $user = Staff::factory()->create(['admin' => true]);
 
-    $review = ReviewFactory::new()
-        ->for(ProductVariantFactory::new(), 'purchasable')
+    $review = Review::factory()
+        ->for(ProductVariant::factory(), 'purchasable')
         ->create();
 
     $self = "http://localhost/api/v1/reviews/{$review->getRouteKey()}/-actions/unpublish";

@@ -1,16 +1,15 @@
 <?php
 
-use Dystcz\LunarApiReviews\Domain\Reviews\Factories\ReviewFactory;
+use Dystcz\LunarApi\Domain\ProductVariants\Models\ProductVariant;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Lunar\Database\Factories\ProductVariantFactory;
 
 uses(TestCase::class, RefreshDatabase::class);
 
-it('reads reviews', function () {
-    $reviews = ReviewFactory::new()
-        ->for(ProductVariantFactory::new(), 'purchasable')
+it('can list reviews', function () {
+    $reviews = Review::factory()
+        ->for(ProductVariant::factory(), 'purchasable')
         ->count(5)
         ->create();
 
@@ -24,10 +23,10 @@ it('reads reviews', function () {
     $response->assertFetchedMany($reviews);
 });
 
-it('reads a review', function () {
+it('can show a single review', function () {
     /** @var Review $review */
-    $review = ReviewFactory::new()
-        ->for(ProductVariantFactory::new(), 'purchasable')
+    $review = Review::factory()
+        ->for(ProductVariant::factory(), 'purchasable')
         ->create();
 
     $self = 'http://localhost/api/v1/reviews/'.$review->getRouteKey();
