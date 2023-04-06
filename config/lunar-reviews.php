@@ -29,5 +29,6 @@ return [
         ],
     ],
 
-    'auth_middleware' => 'auth',
+    // Middleware for specific guarded routes
+    'auth_middleware' => ['auth'],
 ];

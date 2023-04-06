@@ -17,9 +17,10 @@ return new class extends Migration
             $table->tinyInteger('rating')->unsigned();
             $table->text('comment')->nullable();
 
-            $table->datetime('published_at')->useCurrent()->nullable();
+            $table->dateTime('published_at')->useCurrent()->nullable();
 
             $table->timestamps();
+
         });
     }
 
