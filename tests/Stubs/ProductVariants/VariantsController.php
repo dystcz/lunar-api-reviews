@@ -1,8 +1,8 @@
 <?php
 
-namespace Dystcz\LunarReviews\Tests\Stubs\ProductVariants;
+namespace Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants;
 
-use Dystcz\LunarReviews\Controller;
+use Dystcz\LunarApiReviews\Domain\Base\Http\Controllers\Controller;
 use LaravelJsonApi\Laravel\Http\Controllers\Actions\FetchRelated;
 
 class VariantsController extends Controller

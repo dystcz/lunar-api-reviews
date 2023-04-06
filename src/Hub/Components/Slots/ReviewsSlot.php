@@ -1,8 +1,8 @@
 <?php
 
-namespace Dystcz\LunarReviews\Hub\Components\Slots;
+namespace Dystcz\LunarApiReviews\Hub\Components\Slots;
 
-use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
+use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Lunar\Hub\Slots\AbstractSlot;

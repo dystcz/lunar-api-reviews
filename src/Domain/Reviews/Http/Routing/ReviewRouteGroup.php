@@ -1,26 +1,20 @@
 <?php
 
-namespace Dystcz\LunarReviews\Domain\Reviews\Http\Routing;
+namespace Dystcz\LunarApiReviews\Domain\Reviews\Http\Routing;
 
-use Dystcz\LunarReviews\Domain\Reviews\Http\Controllers\PublishReviewsController;
-use Dystcz\LunarReviews\Domain\Reviews\Http\Controllers\ReviewsController;
-use Dystcz\LunarReviews\Routing\RouteGroup;
+use Dystcz\LunarApiReviews\Domain\Reviews\Http\Controllers\PublishReviewsController;
+use Dystcz\LunarApiReviews\Domain\Reviews\Http\Controllers\ReviewsController;
+use Dystcz\LunarApiReviews\Routing\RouteGroup;
 use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
 
 class ReviewRouteGroup extends RouteGroup
 {
-    /** @var string */
     public string $prefix = 'reviews';
 
-    /** @var array */
     public array $middleware = [];
 
     /**
      * Register routes.
-     *
-     * @param  null|string  $prefix
-     * @param  array|string  $middleware
-     * @return void
      */
     public function routes(?string $prefix = null, array|string $middleware = []): void
     {

@@ -1,6 +1,6 @@
 <?php
 
-use Dystcz\LunarReviews\Tests\TestCase;
+use Dystcz\LunarApiReviews\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Lunar\Database\Factories\ProductFactory;
 use Lunar\Database\Factories\ProductVariantFactory;

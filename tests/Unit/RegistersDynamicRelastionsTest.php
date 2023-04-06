@@ -1,6 +1,6 @@
 <?php
 
-use Dystcz\LunarReviews\Tests\TestCase;
+use Dystcz\LunarApiReviews\Tests\TestCase;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Lunar\Models\ProductVariant;

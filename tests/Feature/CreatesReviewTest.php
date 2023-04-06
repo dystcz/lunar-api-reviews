@@ -1,15 +1,19 @@
 <?php
 
-use Dystcz\LunarReviews\Domain\Reviews\Factories\ReviewFactory;
-use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
-use Dystcz\LunarReviews\Tests\Stubs\Users\UserFactory;
-use Dystcz\LunarReviews\Tests\TestCase;
+use Dystcz\LunarApiReviews\Domain\Reviews\Factories\ReviewFactory;
+use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
+use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
+use Dystcz\LunarApiReviews\Tests\Stubs\Users\UserFactory;
+use Dystcz\LunarApiReviews\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Lunar\Database\Factories\ProductVariantFactory;
 
 uses(TestCase::class, RefreshDatabase::class);
 
-it('creates a review', function () {
+it('can create a review', function () {
+    /** @var TestCase $this */
+
+    /** @var User $user */
     $user = UserFactory::new()->create();
 
     /** @var Review $review */

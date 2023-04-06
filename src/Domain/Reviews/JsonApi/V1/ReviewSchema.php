@@ -1,8 +1,8 @@
 <?php
 
-namespace Dystcz\LunarReviews\Domain\Reviews\JsonApi\V1;
+namespace Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1;
 
-use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
+use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Dystcz\LunarReviews\Routing;
+namespace Dystcz\LunarApiReviews\Routing;
 
-use Dystcz\LunarReviews\Routing\Contracts\RouteGroup as RouteGroupContract;
+use Dystcz\LunarApiReviews\Routing\Contracts\RouteGroup as RouteGroupContract;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\App;
 

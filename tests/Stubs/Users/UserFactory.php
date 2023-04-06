@@ -1,6 +1,6 @@
 <?php
 
-namespace Dystcz\LunarReviews\Tests\Stubs\Users;
+namespace Dystcz\LunarApiReviews\Tests\Stubs\Users;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;

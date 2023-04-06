@@ -1,8 +1,8 @@
 <?php
 
-namespace Dystcz\LunarReviews\Tests\Stubs\ProductVariants;
+namespace Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants;
 
-use Dystcz\LunarReviews\Routing\RouteGroup;
+use Dystcz\LunarApiReviews\Routing\RouteGroup;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use LaravelJsonApi\Laravel\Facades\JsonApiRoute;

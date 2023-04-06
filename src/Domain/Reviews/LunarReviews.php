@@ -1,6 +1,6 @@
 <?php
 
-namespace Dystcz\LunarReviews;
+namespace Dystcz\LunarApiReviews\Domain\Reviews;
 
 class LunarReviews
 {

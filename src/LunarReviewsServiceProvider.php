@@ -1,10 +1,11 @@
 <?php
 
-namespace Dystcz\LunarReviews;
+namespace Dystcz\LunarApiReviews;
 
-use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
-use Dystcz\LunarReviews\Domain\Reviews\Policies\ReviewPolicy;
-use Dystcz\LunarReviews\Hub\Components\Slots\ReviewsSlot;
+use Dystcz\LunarApiReviews\Domain\Reviews\LunarReviews;
+use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
+use Dystcz\LunarApiReviews\Domain\Reviews\Policies\ReviewPolicy;
+use Dystcz\LunarApiReviews\Hub\Components\Slots\ReviewsSlot;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Lunar\Hub\Facades\Slot;
@@ -50,7 +51,6 @@ class LunarReviewsServiceProvider extends ServiceProvider
     {
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__.'/../config/lunar-reviews.php', 'lunar-reviews');
-        $this->mergeConfigFrom(__DIR__.'/../config/jsonapi.php', 'jsonapi');
 
         // Register the main class to use with the facade
         $this->app->singleton('lunar-reviews', function () {

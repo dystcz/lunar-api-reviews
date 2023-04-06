@@ -15,13 +15,13 @@ return [
     // Configuration for specific domains
     'domains' => [
         'reviews' => [
-            'model' => Dystcz\LunarReviews\Domain\Reviews\Models\Review::class,
+            'model' => Dystcz\LunarApiReviews\Domain\Reviews\Models\Review::class,
 
             // Route groups which get registered
             // If you want to change the behaviour or add some data,
             // simply extend the package product groups and add your logic
             'route_groups' => [
-                'reviews' => Dystcz\LunarReviews\Domain\Reviews\Http\Routing\ReviewRouteGroup::class,
+                'reviews' => Dystcz\LunarApiReviews\Domain\Reviews\Http\Routing\ReviewRouteGroup::class,
             ],
 
             // Default pagination

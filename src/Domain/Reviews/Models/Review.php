@@ -1,11 +1,11 @@
 <?php
 
-namespace Dystcz\LunarReviews\Domain\Reviews\Models;
+namespace Dystcz\LunarApiReviews\Domain\Reviews\Models;
 
-use Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Lunar\Base\BaseModel;
 
@@ -33,8 +33,6 @@ class Review extends BaseModel
 
     /**
      * Purchasable relation.
-     *
-     * @return MorphTo
      */
     public function purchasable(): MorphTo
     {
@@ -43,8 +41,6 @@ class Review extends BaseModel
 
     /**
      * User relation.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -55,9 +51,6 @@ class Review extends BaseModel
 
     /**
      * Scope published reviews.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopePublished(Builder $query): Builder
     {

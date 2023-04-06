@@ -1,6 +1,6 @@
 <?php
 
-namespace Dystcz\LunarReviews\Tests\Stubs\Exceptions;
+namespace Dystcz\LunarApiReviews\Tests\Stubs\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use LaravelJsonApi\Core\Exceptions\JsonApiException;

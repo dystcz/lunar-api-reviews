@@ -1,26 +1,18 @@
 <?php
 
-namespace Dystcz\LunarReviews\Tests;
+namespace Dystcz\LunarApiReviews\Tests;
 
-use Cartalyst\Converter\Laravel\ConverterServiceProvider;
-use Dystcz\LunarReviews\LunarReviewsServiceProvider;
-use Dystcz\LunarReviews\Tests\Stubs\JsonApi\Server;
-use Dystcz\LunarReviews\Tests\Stubs\ProductVariants\ProductVariantRouteGroup;
-use Dystcz\LunarReviews\Tests\Stubs\Users\User;
+use Dystcz\LunarApi\Tests\Stubs\Lunar\TestUrlGenerator;
+use Dystcz\LunarApiReviews\LunarReviewsServiceProvider;
+use Dystcz\LunarApiReviews\Tests\Stubs\JsonApi\Server;
+use Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants\ProductVariantRouteGroup;
+use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Application;
-use Kalnoy\Nestedset\NestedSetServiceProvider;
+use Illuminate\Support\Facades\Config;
 use LaravelJsonApi\Testing\MakesJsonApiRequests;
 use LaravelJsonApi\Testing\TestExceptionHandler;
-use Livewire\LivewireServiceProvider;
-use Lunar\Database\Factories\LanguageFactory;
-use Lunar\Hub\AdminHubServiceProvider;
-use Lunar\LivewireTables\LivewireTablesServiceProvider;
-use Lunar\LunarServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Spatie\Activitylog\ActivitylogServiceProvider;
-use Spatie\LaravelBlink\BlinkServiceProvider;
-use Spatie\MediaLibrary\MediaLibraryServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
@@ -30,12 +22,9 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
-        LanguageFactory::new()->create([
-            'code' => 'en',
-            'name' => 'English',
-        ]);
+        Config::set('auth.providers.users.model', User::class);
 
-        config()->set('auth.providers.users.model', User::class);
+        Config::set('lunar.urls.generator', TestUrlGenerator::class);
 
         activity()->disableLogging();
     }
@@ -46,7 +35,7 @@ abstract class TestCase extends Orchestra
      */
     protected function getPackageProviders($app)
     {
-        config()->set('jsonapi.servers.v1', Server::class);
+        Config::set('lunar-api.additional_servers', [Server::class]);
 
         return [
             // Lunar Reviews
@@ -57,20 +46,23 @@ abstract class TestCase extends Orchestra
             \LaravelJsonApi\Laravel\ServiceProvider::class,
             \LaravelJsonApi\Spec\ServiceProvider::class,
 
+            // Lunar Api
+            \Dystcz\LunarApi\LunarApiServiceProvider::class,
+
             // Livewire
-            LivewireTablesServiceProvider::class,
-            LivewireServiceProvider::class,
+            \Lunar\LivewireTables\LivewireTablesServiceProvider::class,
+            \Livewire\LivewireServiceProvider::class,
 
             // Lunar Hub
-            AdminHubServiceProvider::class,
+            \Lunar\Hub\AdminHubServiceProvider::class,
 
             // Lunar core
-            LunarServiceProvider::class,
-            MediaLibraryServiceProvider::class,
-            ActivitylogServiceProvider::class,
-            ConverterServiceProvider::class,
-            NestedSetServiceProvider::class,
-            BlinkServiceProvider::class,
+            \Lunar\LunarServiceProvider::class,
+            \Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
+            \Spatie\Activitylog\ActivitylogServiceProvider::class,
+            \Cartalyst\Converter\Laravel\ConverterServiceProvider::class,
+            \Kalnoy\Nestedset\NestedSetServiceProvider::class,
+            \Spatie\LaravelBlink\BlinkServiceProvider::class,
         ];
     }
 
@@ -79,11 +71,11 @@ abstract class TestCase extends Orchestra
      */
     public function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'sqlite');
+        Config::set('database.default', 'sqlite');
 
-        config()->set('database.migrations', 'migrations');
+        Config::set('database.migrations', 'migrations');
 
-        config()->set('database.connections.sqlite', [
+        Config::set('database.connections.sqlite', [
             'driver' => 'sqlite',
             'database' => ':memory:',
             'prefix' => '',
@@ -100,8 +92,6 @@ abstract class TestCase extends Orchestra
 
     /**
      * Define database migrations.
-     *
-     * @return void
      */
     protected function defineDatabaseMigrations(): void
     {

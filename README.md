@@ -1,8 +1,8 @@
-# Lunar reviews
+# Lunar API reviews ⭐
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/dystcz/lunar-reviews.svg?style=flat-square)](https://packagist.org/packages/dystcz/lunar-reviews)
-[![Total Downloads](https://img.shields.io/packagist/dt/dystcz/lunar-reviews.svg?style=flat-square)](https://packagist.org/packages/dystcz/lunar-reviews)
-![GitHub Actions](https://github.com/dystcz/lunar-reviews/actions/workflows/main.yml/badge.svg)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/dystcz/lunar-api-reviews.svg?style=flat-square)](https://packagist.org/packages/dystcz/lunar-api-reviews)
+[![Total Downloads](https://img.shields.io/packagist/dt/dystcz/lunar-api-reviews.svg?style=flat-square)](https://packagist.org/packages/dystcz/lunar-api-reviews)
+![GitHub Actions](https://github.com/dystcz/lunar-api-reviews/actions/workflows/main.yml/badge.svg)
 
 Plug and play reviews for Lunar ecommerce package
 
@@ -11,7 +11,7 @@ Plug and play reviews for Lunar ecommerce package
 You can install the package via composer:
 
 ```bash
-composer require dystcz/lunar-reviews
+composer require dystcz/lunar-api-reviews
 ```
 
 ## Usage

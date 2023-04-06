@@ -1,8 +1,8 @@
 <?php
 
-namespace Dystcz\LunarReviews\Domain\Reviews\Factories;
+namespace Dystcz\LunarApiReviews\Domain\Reviews\Factories;
 
-use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
+use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\Factories\UserFactory;
 

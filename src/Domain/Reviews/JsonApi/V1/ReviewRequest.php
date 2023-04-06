@@ -1,6 +1,6 @@
 <?php
 
-namespace Dystcz\LunarReviews\Domain\Reviews\JsonApi\V1;
+namespace Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1;
 
 use LaravelJsonApi\Laravel\Http\Requests\ResourceRequest;
 use LaravelJsonApi\Validation\Rule as JsonApiRule;

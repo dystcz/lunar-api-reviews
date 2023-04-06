@@ -1,13 +1,13 @@
 <?php
 
-namespace Dystcz\LunarReviews;
+namespace Dystcz\LunarApiReviews\Domain\Reviews\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Dystcz\LunarReviews\Skeleton\SkeletonClass
+ * @see \Dystcz\LunarApiReviews\Skeleton\SkeletonClass
  */
-class LunarReviewsFacade extends Facade
+class LunarApiReview extends Facade
 {
     /**
      * Get the registered name of the component.

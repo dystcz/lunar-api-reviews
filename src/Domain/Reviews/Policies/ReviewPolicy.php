@@ -1,8 +1,8 @@
 <?php
 
-namespace Dystcz\LunarReviews\Domain\Reviews\Policies;
+namespace Dystcz\LunarApiReviews\Domain\Reviews\Policies;
 
-use Dystcz\LunarReviews\Domain\Reviews\Models\Review;
+use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
