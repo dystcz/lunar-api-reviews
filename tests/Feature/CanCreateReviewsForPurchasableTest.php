@@ -1,12 +1,12 @@
 <?php
 
+use Dystcz\LunarApi\Domain\Products\Models\Product;
+use Dystcz\LunarApi\Domain\ProductVariants\Models\ProductVariant;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\UserFactory;
 use Dystcz\LunarApiReviews\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Lunar\Models\Product;
-use Lunar\Models\ProductVariant;
 
 uses(TestCase::class, RefreshDatabase::class);
 

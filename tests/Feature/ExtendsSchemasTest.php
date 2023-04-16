@@ -17,12 +17,10 @@ it('reviews extend ProductSchema with reviews relationship', function () {
         )
         ->create();
 
-    $self = "http://localhost/api/v1/variants/{$product->id}/reviews";
-
     $response = $this
         ->jsonApi()
         ->expects('reviews')
-        ->get($self);
+        ->get("/api/v1/variants/{$product->id}/reviews");
 
     $response->assertFetchedMany($product->reviews);
 });
@@ -32,12 +30,10 @@ it('reviews extend ProductVariantSchema with reviews relationship', function () 
         ->has(ReviewFactory::new(), 'reviews')
         ->create();
 
-    $self = "http://localhost/api/v1/variants/{$productVariant->id}/reviews";
-
     $response = $this
         ->jsonApi()
         ->expects('reviews')
-        ->get($self);
+        ->get("/api/v1/variants/{$productVariant->id}/reviews");
 
     $response->assertFetchedMany($productVariant->reviews);
 });
