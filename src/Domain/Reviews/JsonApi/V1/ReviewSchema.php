@@ -2,6 +2,7 @@
 
 namespace Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1;
 
+use Dystcz\LunarApi\Domain\JsonApi\Eloquent\Schema;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -15,7 +16,6 @@ use LaravelJsonApi\Eloquent\Fields\Relations\MorphTo;
 use LaravelJsonApi\Eloquent\Fields\Str;
 use LaravelJsonApi\Eloquent\Filters\WhereIdIn;
 use LaravelJsonApi\Eloquent\Pagination\PagePagination;
-use LaravelJsonApi\Eloquent\Schema;
 
 class ReviewSchema extends Schema
 {
