@@ -2,10 +2,10 @@
 
 namespace Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants;
 
+use Dystcz\LunarApi\Domain\JsonApi\Eloquent\Schema;
 use Dystcz\LunarApi\Domain\ProductVariants\Models\ProductVariant;
 use LaravelJsonApi\Eloquent\Fields\ID;
 use LaravelJsonApi\Eloquent\Fields\Relations\BelongsToMany;
-use LaravelJsonApi\Eloquent\Schema;
 
 class ProductVariantSchema extends Schema
 {

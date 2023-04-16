@@ -4,6 +4,7 @@ namespace Dystcz\LunarApiReviews\Tests\Stubs\JsonApi\V1;
 
 use Dystcz\LunarApi\Domain\JsonApi\Servers\Server as BaseServer;
 use Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1\ReviewSchema;
+use Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants\ProductVariantSchema;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\UserSchema;
 
 class Server extends BaseServer
@@ -15,6 +16,7 @@ class Server extends BaseServer
     {
         return [
             ReviewSchema::class,
+            ProductVariantSchema::class,
             UserSchema::class,
         ];
     }
