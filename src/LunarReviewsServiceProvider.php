@@ -13,6 +13,7 @@ use Dystcz\LunarApi\Domain\ProductVariants\Models\ProductVariant;
 use Dystcz\LunarApiReviews\Domain\Hub\Components\Slots\ReviewsSlot;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Domain\Reviews\Policies\ReviewPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasManyThrough;
@@ -57,6 +58,10 @@ class LunarReviewsServiceProvider extends ServiceProvider
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__.'/../config/lunar-reviews.php', 'lunar-reviews');
 
+        $this->booting(function () {
+            $this->registerPolicies();
+        });
+
         $this->registerDynamicRelations();
         $this->extendSchemas();
     }
@@ -74,10 +79,10 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 'product_id',
                 'purchasable_id'
             )
-                ->where(
-                    'purchasable_type',
-                    ProductVariant::class
-                );
+            ->where(
+                'purchasable_type',
+                ProductVariant::class
+            );
         });
     }
 
@@ -89,7 +94,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 HasManyThrough::make('reviews'),
             ])
             ->showRelated(['reviews'])
-            ->showRelationships(['reviews']);
+            ->showRelationship(['reviews']);
 
         ResourceManifest::for(ProductResource::class)
             ->relationships(fn ($resource) => [
@@ -107,11 +112,33 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 HasMany::make('reviews'),
             ])
             ->showRelated(['reviews'])
-            ->showRelationships(['reviews']);
+            ->showRelationship(['reviews']);
 
         ResourceManifest::for(ProductVariantResource::class)
             ->relationships(fn ($resource) => [
                 'reviews' => $resource->relation('reviews'),
             ]);
+    }
+
+    /**
+     * Register the application's policies.
+     *
+     * @return void
+     */
+    public function registerPolicies()
+    {
+        foreach ($this->policies() as $model => $policy) {
+            Gate::policy($model, $policy);
+        }
+    }
+
+    /**
+     * Get the policies defined on the provider.
+     *
+     * @return array<class-string, class-string>
+     */
+    public function policies()
+    {
+        return $this->policies;
     }
 }
