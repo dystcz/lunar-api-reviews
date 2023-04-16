@@ -11,8 +11,7 @@ uses(TestCase::class, RefreshDatabase::class);
 it('reviews extend ProductSchema with reviews relationship', function () {
     $product = ProductFactory::new()
         ->has(
-            ProductVariantFactory::new()
-                ->has(ReviewFactory::new(), 'reviews'),
+            ProductVariantFactory::new()->has(ReviewFactory::new()->count(3), 'reviews'),
             'variants'
         )
         ->create();
@@ -20,20 +19,20 @@ it('reviews extend ProductSchema with reviews relationship', function () {
     $response = $this
         ->jsonApi()
         ->expects('reviews')
-        ->get("/api/v1/variants/{$product->id}/reviews");
+        ->get("/api/v1/products/{$product->getRouteKey()}/reviews");
 
     $response->assertFetchedMany($product->reviews);
 });
 
 it('reviews extend ProductVariantSchema with reviews relationship', function () {
     $productVariant = ProductVariantFactory::new()
-        ->has(ReviewFactory::new(), 'reviews')
+        ->has(ReviewFactory::new()->count(3), 'reviews')
         ->create();
 
     $response = $this
         ->jsonApi()
         ->expects('reviews')
-        ->get("/api/v1/variants/{$productVariant->id}/reviews");
+        ->get("/api/v1/variants/{$productVariant->getRouteKey()}/reviews");
 
     $response->assertFetchedMany($productVariant->reviews);
 });
