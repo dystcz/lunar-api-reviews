@@ -39,9 +39,13 @@ class ReviewSchema extends Schema
             ID::make(),
 
             Str::make('comment'),
+
             Number::make('rating')->sortable(),
+
             Number::make('purchasable_id'),
+
             Str::make('purchasable_type'),
+
             DateTime::make('published_at')
                 ->serializeUsing(
                     static fn ($value) => $value->format('Y-m-d H:i:s'),
@@ -52,6 +56,7 @@ class ReviewSchema extends Schema
                 ->serializeUsing(
                     static fn ($relation) => $relation->withoutLinks(),
                 ),
+
             MorphTo::make('purchasable', 'reviews')
                 ->types('products', 'variants'),
 
