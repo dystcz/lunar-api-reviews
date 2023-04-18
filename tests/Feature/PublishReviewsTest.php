@@ -15,20 +15,16 @@ it('can publish a review', function () {
             'published_at' => null,
         ]);
 
-    $self = "http://localhost/api/v1/reviews/{$review->getRouteKey()}/-actions/publish";
-
     $response = $this
         ->actingAs($review->user)
         ->jsonApi()
         ->expects('reviews')
-        ->post($self);
+        ->post("/api/v1/reviews/{$review->getRouteKey()}/-actions/publish");
 
     $response->assertFetchedOne($review);
 
-    expect(
-        $response->json('data.attributes.published_at')
-    )
-        ->toBe($review->fresh()->published_at->toIsoString());
+    expect($response->json('data.attributes.published_at'))
+        ->toBe($review->fresh()->published_at->format('Y-m-d H:i:s'));
 });
 
 it('can unpublish a review', function () {
@@ -38,13 +34,11 @@ it('can unpublish a review', function () {
         ->for(ProductVariant::factory(), 'purchasable')
         ->create();
 
-    $self = "http://localhost/api/v1/reviews/{$review->getRouteKey()}/-actions/unpublish";
-
     $response = $this
         ->actingAs($user)
         ->jsonApi()
         ->expects('reviews')
-        ->delete($self);
+        ->delete("http://localhost/api/v1/reviews/{$review->getRouteKey()}/-actions/unpublish");
 
     $response->assertNoContent();
 
