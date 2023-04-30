@@ -2,14 +2,14 @@
 
 namespace Dystcz\LunarApiReviews;
 
-use Dystcz\LunarApi\Domain\JsonApi\Extensions\Resource\ResourceManifest;
-use Dystcz\LunarApi\Domain\JsonApi\Extensions\Schema\SchemaManifest;
+use Dystcz\LunarApi\Domain\JsonApi\Extensions\Contracts\ResourceManifest;
+use Dystcz\LunarApi\Domain\JsonApi\Extensions\Contracts\SchemaManifest;
+// use Dystcz\LunarApi\Domain\JsonApi\Extensions\Resource\ResourceManifest;
+// use Dystcz\LunarApi\Domain\JsonApi\Extensions\Schema\SchemaManifest;
 use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductResource;
 use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductSchema;
-use Dystcz\LunarApi\Domain\Products\Models\Product;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantResource;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantSchema;
-use Dystcz\LunarApi\Domain\ProductVariants\Models\ProductVariant;
 use Dystcz\LunarApiReviews\Domain\Hub\Components\Slots\ReviewsSlot;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Domain\Reviews\Policies\ReviewPolicy;
@@ -19,6 +19,8 @@ use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasManyThrough;
 use Livewire\Livewire;
 use Lunar\Hub\Facades\Slot;
+use Lunar\Models\Product;
+use Lunar\Models\ProductVariant;
 
 class LunarReviewsServiceProvider extends ServiceProvider
 {
@@ -73,49 +75,53 @@ class LunarReviewsServiceProvider extends ServiceProvider
         });
 
         Product::resolveRelationUsing('reviews', function ($model) {
-            return $model->hasManyThrough(
-                Review::class,
-                ProductVariant::class,
-                'product_id',
-                'purchasable_id'
-            )
-            ->where(
-                'purchasable_type',
-                ProductVariant::class
-            );
+            return $model
+                ->hasManyThrough(
+                    Review::class,
+                    ProductVariant::class,
+                    'product_id',
+                    'purchasable_id'
+                )
+                ->where(
+                    'purchasable_type',
+                    ProductVariant::class
+                );
         });
     }
 
     protected function extendSchemas(): void
     {
-        SchemaManifest::for(ProductSchema::class)
-            ->includePaths(['reviews', 'variants.reviews'])
-            ->fields([
+        $schemaManifest = $this->app->make(SchemaManifest::class);
+        $resourceManifest = $this->app->make(ResourceManifest::class);
+
+        $schemaManifest::for(ProductSchema::class)
+            ->setIncludePaths(['reviews', 'variants.reviews'])
+            ->setFields([
                 HasManyThrough::make('reviews'),
             ])
-            ->showRelated(['reviews'])
-            ->showRelationship(['reviews']);
+            ->setShowRelated(['reviews'])
+            ->setShowRelationship(['reviews']);
 
-        ResourceManifest::for(ProductResource::class)
-            ->relationships(fn ($resource) => [
+        $resourceManifest::for(ProductResource::class)
+            ->setRelationships(fn ($resource) => [
                 $resource->relation('reviews'),
             ]);
 
-        ResourceManifest::for(ProductResource::class)
-            ->relationships(fn ($resource) => [
+        $resourceManifest::for(ProductResource::class)
+            ->setRelationships(fn ($resource) => [
                 $resource->relation('reviews'),
             ]);
 
-        SchemaManifest::for(ProductVariantSchema::class)
-            ->includePaths(['reviews'])
-            ->fields([
+        $schemaManifest::for(ProductVariantSchema::class)
+            ->setIncludePaths(['reviews'])
+            ->setFields([
                 HasMany::make('reviews'),
             ])
-            ->showRelated(['reviews'])
-            ->showRelationship(['reviews']);
+            ->setShowRelated(['reviews'])
+            ->setShowRelationship(['reviews']);
 
-        ResourceManifest::for(ProductVariantResource::class)
-            ->relationships(fn ($resource) => [
+        $resourceManifest::for(ProductVariantResource::class)
+            ->setRelationships(fn ($resource) => [
                 'reviews' => $resource->relation('reviews'),
             ]);
     }
