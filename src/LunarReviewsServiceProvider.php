@@ -4,8 +4,6 @@ namespace Dystcz\LunarApiReviews;
 
 use Dystcz\LunarApi\Domain\JsonApi\Extensions\Contracts\ResourceManifest;
 use Dystcz\LunarApi\Domain\JsonApi\Extensions\Contracts\SchemaManifest;
-// use Dystcz\LunarApi\Domain\JsonApi\Extensions\Resource\ResourceManifest;
-// use Dystcz\LunarApi\Domain\JsonApi\Extensions\Schema\SchemaManifest;
 use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductResource;
 use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductSchema;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantResource;
