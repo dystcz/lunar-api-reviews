@@ -15,7 +15,7 @@ return [
     // Configuration for specific domains
     'domains' => [
         'reviews' => [
-            'model' => Dystcz\LunarApiReviews\Domain\Reviews\Models\Review::class,
+            'schema' => Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1\ReviewSchema::class,
 
             // Route groups which get registered
             // If you want to change the behaviour or add some data,
@@ -23,12 +23,15 @@ return [
             'route_groups' => [
                 'reviews' => Dystcz\LunarApiReviews\Domain\Reviews\Http\Routing\ReviewRouteGroup::class,
             ],
-
-            // Default pagination
-            'pagination' => 12,
         ],
     ],
 
     // Middleware for specific guarded routes
     'auth_middleware' => ['auth'],
+
+    // Pagination defaults
+    'pagination' => [
+        'per_page' => 12,
+        'max_size' => 25,
+    ],
 ];
