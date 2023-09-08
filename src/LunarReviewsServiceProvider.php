@@ -4,6 +4,8 @@ namespace Dystcz\LunarApiReviews;
 
 use Dystcz\LunarApi\Domain\JsonApi\Extensions\Contracts\ResourceManifest;
 use Dystcz\LunarApi\Domain\JsonApi\Extensions\Contracts\SchemaManifest;
+use Dystcz\LunarApi\Domain\JsonApi\Extensions\Resource\ResourceExtension;
+use Dystcz\LunarApi\Domain\JsonApi\Extensions\Schema\SchemaExtension;
 use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductResource;
 use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductSchema;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantResource;
@@ -92,7 +94,10 @@ class LunarReviewsServiceProvider extends ServiceProvider
         $schemaManifest = $this->app->make(SchemaManifest::class);
         $resourceManifest = $this->app->make(ResourceManifest::class);
 
-        $schemaManifest::for(ProductSchema::class)
+        /** @var SchemaExtension $productSchemaExtenstion */
+        $productSchemaExtenstion = $schemaManifest::for(ProductSchema::class);
+
+        $productSchemaExtenstion
             ->setIncludePaths(['reviews', 'variants.reviews'])
             ->setFields([
                 HasManyThrough::make('reviews'),
@@ -100,17 +105,18 @@ class LunarReviewsServiceProvider extends ServiceProvider
             ->setShowRelated(['reviews'])
             ->setShowRelationship(['reviews']);
 
-        $resourceManifest::for(ProductResource::class)
+        /** @var ResourceExtension $productResourceExtension */
+        $productResourceExtension = $resourceManifest::for(ProductResource::class);
+
+        $productResourceExtension
             ->setRelationships(fn ($resource) => [
                 $resource->relation('reviews'),
             ]);
 
-        $resourceManifest::for(ProductResource::class)
-            ->setRelationships(fn ($resource) => [
-                $resource->relation('reviews'),
-            ]);
+        /** @var SchemaExtension $productVariantSchemaExtenstion */
+        $productVariantSchemaExtenstion = $schemaManifest::for(ProductVariantSchema::class);
 
-        $schemaManifest::for(ProductVariantSchema::class)
+        $productVariantSchemaExtenstion
             ->setIncludePaths(['reviews'])
             ->setFields([
                 HasMany::make('reviews'),
@@ -118,7 +124,10 @@ class LunarReviewsServiceProvider extends ServiceProvider
             ->setShowRelated(['reviews'])
             ->setShowRelationship(['reviews']);
 
-        $resourceManifest::for(ProductVariantResource::class)
+        /** @var ResourceExtension $productVariantResourceExtension */
+        $productVariantResourceExtension = $resourceManifest::for(ProductVariantResource::class);
+
+        $productVariantResourceExtension
             ->setRelationships(fn ($resource) => [
                 'reviews' => $resource->relation('reviews'),
             ]);
