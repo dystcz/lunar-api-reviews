@@ -17,7 +17,7 @@ class ReviewsSlot extends Component implements AbstractSlot
 
     public static function getName(): string
     {
-        return 'lunar-reviews::reviews-slot';
+        return 'lunar-api-reviews::reviews-slot';
     }
 
     public function getSlotHandle(): string
@@ -57,7 +57,7 @@ class ReviewsSlot extends Component implements AbstractSlot
 
     public function render(): View|Factory
     {
-        return view('lunar-reviews::livewire.reviews-slot', [
+        return view('lunar-api-reviews::livewire.reviews-slot', [
             'reviews' => $this->slotModel->reviews()->paginate(10),
         ]);
     }

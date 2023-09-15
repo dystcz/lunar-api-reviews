@@ -16,6 +16,6 @@ class LunarApiReview extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'lunar-reviews';
+        return 'lunar-api-reviews';
     }
 }

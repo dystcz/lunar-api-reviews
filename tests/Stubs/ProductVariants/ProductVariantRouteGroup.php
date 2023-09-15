@@ -19,8 +19,8 @@ class ProductVariantRouteGroup extends RouteGroup
     public function routes(?string $prefix = null, array|string $middleware = []): void
     {
         Route::group([
-            'prefix' => Config::get('lunar-reviews.route_prefix'),
-            'middleware' => Config::get('lunar-reviews.route_middleware'),
+            'prefix' => Config::get('lunar-api-reviews.route_prefix'),
+            'middleware' => Config::get('lunar-api-reviews.route_middleware'),
         ], function () {
             JsonApiRoute::server('v1')
                 ->prefix('v1')

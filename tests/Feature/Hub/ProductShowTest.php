@@ -25,5 +25,5 @@ test('product show page contains reviews slot component', function () {
     $this
         ->actingAs($staff, 'staff')
         ->get('/hub/products/'.$product->id)
-        ->assertSeeLivewire('lunar-reviews::reviews-slot');
+        ->assertSeeLivewire('lunar-api-reviews::reviews-slot');
 });

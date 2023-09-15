@@ -34,20 +34,20 @@ class LunarReviewsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->loadViewsFrom(__DIR__.'/Domain/Hub/resources/views', 'lunar-reviews');
+        $this->loadViewsFrom(__DIR__.'/Domain/Hub/resources/views', 'lunar-api-reviews');
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
-        Livewire::component('lunar-reviews::reviews-slot', ReviewsSlot::class);
+        Livewire::component('lunar-api-reviews::reviews-slot', ReviewsSlot::class);
 
         Slot::register('product.show', ReviewsSlot::class);
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/lunar-reviews.php' => config_path('lunar-reviews.php'),
+                __DIR__.'/../config/lunar-api-reviews.php' => config_path('lunar-api-reviews.php'),
             ], 'config');
 
             $this->publishes([
-                __DIR__.'/Domain/Hub/resources/views' => resource_path('views/vendor/lunar-reviews'),
+                __DIR__.'/Domain/Hub/resources/views' => resource_path('views/vendor/lunar-api-reviews'),
             ], 'views');
         }
     }
@@ -58,7 +58,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/lunar-reviews.php', 'lunar-reviews');
+        $this->mergeConfigFrom(__DIR__.'/../config/lunar-api-reviews.php', 'lunar-api-reviews');
 
         $this->booting(function () {
             $this->registerPolicies();
