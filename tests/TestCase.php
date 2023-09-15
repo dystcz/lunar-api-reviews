@@ -2,8 +2,6 @@
 
 namespace Dystcz\LunarApiReviews\Tests;
 
-use Dystcz\LunarApi\JsonApiServiceProvider;
-use Dystcz\LunarApiReviews\LunarReviewsServiceProvider;
 use Dystcz\LunarApiReviews\Tests\Stubs\JsonApi\V1\Server;
 use Dystcz\LunarApiReviews\Tests\Stubs\Lunar\TestUrlGenerator;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
@@ -13,7 +11,6 @@ use Illuminate\Support\Facades\Config;
 use LaravelJsonApi\Testing\MakesJsonApiRequests;
 use LaravelJsonApi\Testing\TestExceptionHandler;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Spatie\Permission\PermissionServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
@@ -37,13 +34,17 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            // Spatie
-            PermissionServiceProvider::class,
+            // Spatie Permissions
+            \Spatie\Permission\PermissionServiceProvider::class,
 
             // Laravel JsonApi
             \LaravelJsonApi\Encoder\Neomerx\ServiceProvider::class,
             \LaravelJsonApi\Laravel\ServiceProvider::class,
             \LaravelJsonApi\Spec\ServiceProvider::class,
+
+            // Lunar Api
+            \Dystcz\LunarApi\LunarApiServiceProvider::class,
+            \Dystcz\LunarApi\JsonApiServiceProvider::class,
 
             // Livewire
             \Lunar\LivewireTables\LivewireTablesServiceProvider::class,
@@ -60,12 +61,8 @@ abstract class TestCase extends Orchestra
             \Kalnoy\Nestedset\NestedSetServiceProvider::class,
             \Spatie\LaravelBlink\BlinkServiceProvider::class,
 
-            // Lunar Api
-            \Dystcz\LunarApi\LunarApiServiceProvider::class,
-            JsonApiServiceProvider::class,
-
             // Lunar Reviews
-            LunarReviewsServiceProvider::class,
+            \Dystcz\LunarApiReviews\LunarReviewsServiceProvider::class,
         ];
     }
 
