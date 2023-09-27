@@ -21,7 +21,7 @@
     ],
     "require": {
         "php": "^8.2",
-        "dystcz/lunar-api": "^0.5",
+        "dystcz/lunar-api": "^0.6",
         "illuminate/support": "^10.0",
         "laravel-json-api/laravel": "^3.0",
         "laravel-json-api/non-eloquent": "^3.0",
