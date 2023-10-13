@@ -1,4 +1,4 @@
-# Lunar API reviews ⭐
+# Lunar API Reviews ⭐
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/dystcz/lunar-api-reviews.svg?style=flat-square)](https://packagist.org/packages/dystcz/lunar-api-reviews)
 [![Total Downloads](https://img.shields.io/packagist/dt/dystcz/lunar-api-reviews.svg?style=flat-square)](https://packagist.org/packages/dystcz/lunar-api-reviews)
