@@ -2,7 +2,8 @@
 
 namespace Dystcz\LunarApiReviews\Tests;
 
-use Dystcz\LunarApiReviews\Tests\Stubs\JsonApi\V1\Server;
+use Dystcz\LunarApi\Domain\JsonApi\Extensions\Facades\SchemaManifest;
+use Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1\ReviewSchema;
 use Dystcz\LunarApiReviews\Tests\Stubs\Lunar\TestUrlGenerator;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -74,9 +75,7 @@ abstract class TestCase extends Orchestra
         /**
          * Lunar API configuration
          */
-        Config::set('lunar-api.additional_servers', [
-            Server::class,
-        ]);
+        SchemaManifest::registerSchema(ReviewSchema::class);
 
         /**
          * App configuration
@@ -89,6 +88,7 @@ abstract class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix' => '',
         ]);
+
     }
 
     protected function resolveApplicationExceptionHandler($app): void

@@ -4,6 +4,7 @@ namespace Dystcz\LunarApiReviews;
 
 use Dystcz\LunarApi\Domain\JsonApi\Extensions\Contracts\ResourceManifest;
 use Dystcz\LunarApi\Domain\JsonApi\Extensions\Contracts\SchemaManifest;
+use Dystcz\LunarApi\Domain\JsonApi\Extensions\Facades\SchemaManifest as SchemaManifestFacade;
 use Dystcz\LunarApi\Domain\JsonApi\Extensions\Resource\ResourceExtension;
 use Dystcz\LunarApi\Domain\JsonApi\Extensions\Schema\SchemaExtension;
 use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductResource;
@@ -11,6 +12,7 @@ use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductSchema;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantResource;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantSchema;
 use Dystcz\LunarApiReviews\Domain\Hub\Components\Slots\ReviewsSlot;
+use Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1\ReviewSchema;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Domain\Reviews\Policies\ReviewPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -36,6 +38,8 @@ class LunarReviewsServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadViewsFrom(__DIR__.'/Domain/Hub/resources/views', 'lunar-api-reviews');
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+
+        SchemaManifestFacade::registerSchema(ReviewSchema::class);
 
         Livewire::component('lunar-api-reviews::reviews-slot', ReviewsSlot::class);
 
