@@ -2,7 +2,7 @@
 
 namespace Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1;
 
-use Dystcz\LunarApi\Domain\Collections\JsonApi\V1\CollectionQuery;
+use Dystcz\LunarApi\Domain\JsonApi\Queries\CollectionQuery;
 
 class ReviewCollectionQuery extends CollectionQuery
 {
