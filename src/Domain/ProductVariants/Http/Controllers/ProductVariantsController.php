@@ -2,12 +2,14 @@
 
 namespace Dystcz\LunarApiReviews\Domain\ProductVariants\Http\Controllers;
 
-use Dystcz\LunarApi\Controller;
-use LaravelJsonApi\Laravel\Http\Controllers\Actions;
+use Dystcz\LunarApi\Base\Controller;
+use LaravelJsonApi\Laravel\Http\Controllers\Actions\FetchMany;
+use LaravelJsonApi\Laravel\Http\Controllers\Actions\FetchRelated;
+use LaravelJsonApi\Laravel\Http\Controllers\Actions\FetchRelationship;
 
 class ProductVariantsController extends Controller
 {
-    use Actions\FetchMany;
-    use Actions\FetchRelated;
-    use Actions\FetchRelationship;
+    use FetchMany;
+    use FetchRelated;
+    use FetchRelationship;
 }

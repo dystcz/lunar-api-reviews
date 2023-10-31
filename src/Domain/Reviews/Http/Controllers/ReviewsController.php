@@ -2,21 +2,27 @@
 
 namespace Dystcz\LunarApiReviews\Domain\Reviews\Http\Controllers;
 
-use Dystcz\LunarApiReviews\Domain\Base\Http\Controllers\Controller;
+use Dystcz\LunarApi\Base\Controller;
 use Illuminate\Support\Facades\Config;
-use LaravelJsonApi\Laravel\Http\Controllers\Actions;
+use LaravelJsonApi\Laravel\Http\Controllers\Actions\Destroy;
+use LaravelJsonApi\Laravel\Http\Controllers\Actions\FetchMany;
+use LaravelJsonApi\Laravel\Http\Controllers\Actions\FetchOne;
+use LaravelJsonApi\Laravel\Http\Controllers\Actions\Store;
 
 class ReviewsController extends Controller
 {
-    use Actions\FetchMany;
-    use Actions\FetchOne;
-    use Actions\Store;
-    use Actions\Destroy;
+    use Destroy;
+    use FetchMany;
+    use FetchOne;
+    use Store;
 
     public function __construct()
     {
         $this->middleware(
-            Config::get('lunar-api-reviews.auth_middleware')
+            Config::get(
+                'lunar-api.reviews.domains.reviews.settings.auth_middleware',
+                ['auth'],
+            )
         )->only('store');
     }
 }
