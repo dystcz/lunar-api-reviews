@@ -2,7 +2,7 @@
 
 namespace Dystcz\LunarApiReviews\Domain\Reviews\Http\Controllers;
 
-use Dystcz\LunarApiReviews\Domain\Base\Http\Controllers\Controller;
+use Dystcz\LunarApi\Base\Controller;
 use Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1\ReviewSchema;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Illuminate\Http\Request;

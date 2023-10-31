@@ -10,6 +10,7 @@ use Lunar\Hub\Models\Staff;
 uses(TestCase::class, RefreshDatabase::class);
 
 it('can delete a review', function () {
+    /** @var TestCase $this */
     $user = User::factory()->create();
 
     $review = Review::factory()
@@ -30,6 +31,7 @@ it('can delete a review', function () {
 });
 
 it('allows only admin or owner to delete a review', function () {
+    /** @var TestCase $this */
     // delete review as random user
     $randomUser = User::factory()->create();
     $reviewOwner = User::factory()->create();

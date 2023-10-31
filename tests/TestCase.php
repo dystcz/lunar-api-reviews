@@ -2,9 +2,12 @@
 
 namespace Dystcz\LunarApiReviews\Tests;
 
-use Dystcz\LunarApiReviews\Tests\Stubs\JsonApi\V1\Server;
+use Dystcz\LunarApi\Base\Facades\SchemaManifestFacade;
 use Dystcz\LunarApiReviews\Tests\Stubs\Lunar\TestUrlGenerator;
+use Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants\ProductVariantRouteGroup;
+use Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants\ProductVariantSchema;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
+use Dystcz\LunarApiReviews\Tests\Stubs\Users\UserSchema;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Config;
@@ -21,7 +24,6 @@ abstract class TestCase extends Orchestra
         parent::setUp();
 
         Config::set('auth.providers.users.model', User::class);
-
         Config::set('lunar.urls.generator', TestUrlGenerator::class);
 
         activity()->disableLogging();
@@ -29,11 +31,13 @@ abstract class TestCase extends Orchestra
 
     /**
      * @param  Application  $app
-     * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
+            // Ray
+            \Spatie\LaravelRay\RayServiceProvider::class,
+
             // Spatie Permissions
             \Spatie\Permission\PermissionServiceProvider::class,
 
@@ -41,6 +45,14 @@ abstract class TestCase extends Orchestra
             \LaravelJsonApi\Encoder\Neomerx\ServiceProvider::class,
             \LaravelJsonApi\Laravel\ServiceProvider::class,
             \LaravelJsonApi\Spec\ServiceProvider::class,
+
+            // Lunar core
+            \Lunar\LunarServiceProvider::class,
+            \Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
+            \Spatie\Activitylog\ActivitylogServiceProvider::class,
+            \Cartalyst\Converter\Laravel\ConverterServiceProvider::class,
+            \Kalnoy\Nestedset\NestedSetServiceProvider::class,
+            \Spatie\LaravelBlink\BlinkServiceProvider::class,
 
             // Lunar Api
             \Dystcz\LunarApi\LunarApiServiceProvider::class,
@@ -53,14 +65,6 @@ abstract class TestCase extends Orchestra
             // Lunar Hub
             \Lunar\Hub\AdminHubServiceProvider::class,
 
-            // Lunar core
-            \Lunar\LunarServiceProvider::class,
-            \Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
-            \Spatie\Activitylog\ActivitylogServiceProvider::class,
-            \Cartalyst\Converter\Laravel\ConverterServiceProvider::class,
-            \Kalnoy\Nestedset\NestedSetServiceProvider::class,
-            \Spatie\LaravelBlink\BlinkServiceProvider::class,
-
             // Lunar Reviews
             \Dystcz\LunarApiReviews\LunarReviewsServiceProvider::class,
         ];
@@ -69,15 +73,8 @@ abstract class TestCase extends Orchestra
     /**
      * @param  Application  $app
      */
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
-        /**
-         * Lunar API configuration
-         */
-        Config::set('lunar-api.additional_servers', [
-            Server::class,
-        ]);
-
         /**
          * App configuration
          */
@@ -89,8 +86,25 @@ abstract class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix' => '',
         ]);
+
+        Config::set(
+            'lunar-api.reviews.domains.product_variants',
+            [
+                'routes' => ProductVariantRouteGroup::class,
+                'schema' => ProductVariantSchema::class,
+            ]
+        );
+
+        /**
+         * Schema configuration.
+         */
+        SchemaManifestFacade::registerSchema(UserSchema::class);
+        SchemaManifestFacade::registerSchema(ProductVariantSchema::class);
     }
 
+    /**
+     * Resolve application HTTP exception handler implementation.
+     */
     protected function resolveApplicationExceptionHandler($app): void
     {
         $app->singleton(

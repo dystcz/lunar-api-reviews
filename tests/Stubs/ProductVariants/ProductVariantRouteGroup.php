@@ -16,11 +16,11 @@ class ProductVariantRouteGroup extends RouteGroup
     /**
      * Register routes.
      */
-    public function routes(?string $prefix = null, array|string $middleware = []): void
+    public function routes(string $prefix = null, array|string $middleware = []): void
     {
         Route::group([
-            'prefix' => Config::get('lunar-api-reviews.route_prefix'),
-            'middleware' => Config::get('lunar-api-reviews.route_middleware'),
+            'prefix' => Config::get('lunar-api.general.route_prefix'),
+            'middleware' => Config::get('lunar-api.general.route_middleware'),
         ], function () {
             JsonApiRoute::server('v1')
                 ->prefix('v1')
