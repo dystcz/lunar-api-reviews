@@ -2,19 +2,19 @@
 
 namespace Dystcz\LunarApiReviews;
 
-use Dystcz\LunarApi\Domain\JsonApi\Extensions\Contracts\ResourceManifest;
-use Dystcz\LunarApi\Domain\JsonApi\Extensions\Contracts\SchemaManifest;
-use Dystcz\LunarApi\Domain\JsonApi\Extensions\Facades\SchemaManifest as SchemaManifestFacade;
-use Dystcz\LunarApi\Domain\JsonApi\Extensions\Resource\ResourceExtension;
-use Dystcz\LunarApi\Domain\JsonApi\Extensions\Schema\SchemaExtension;
+use Dystcz\LunarApi\Base\Contracts\ResourceManifest;
+use Dystcz\LunarApi\Base\Contracts\SchemaManifest;
+use Dystcz\LunarApi\Base\Extensions\ResourceExtension;
+use Dystcz\LunarApi\Base\Extensions\SchemaExtension;
+use Dystcz\LunarApi\Base\Facades\SchemaManifestFacade;
 use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductResource;
 use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductSchema;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantResource;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantSchema;
+use Dystcz\LunarApi\Support\Config\Collections\DomainConfigCollection;
 use Dystcz\LunarApiReviews\Domain\Hub\Components\Slots\ReviewsSlot;
 use Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1\ReviewSchema;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
-use Dystcz\LunarApiReviews\Domain\Reviews\Policies\ReviewPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
@@ -26,52 +26,87 @@ use Lunar\Models\ProductVariant;
 
 class LunarReviewsServiceProvider extends ServiceProvider
 {
-    protected $policies = [
-        Review::class => ReviewPolicy::class,
-    ];
-
-    /**
-     * Bootstrap the application services.
-     */
-    public function boot()
-    {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->loadViewsFrom(__DIR__.'/Domain/Hub/resources/views', 'lunar-api-reviews');
-        $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
-
-        SchemaManifestFacade::registerSchema(ReviewSchema::class);
-
-        Livewire::component('lunar-api-reviews::reviews-slot', ReviewsSlot::class);
-
-        Slot::register('product.show', ReviewsSlot::class);
-
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/lunar-api-reviews.php' => config_path('lunar-api-reviews.php'),
-            ], 'config');
-
-            $this->publishes([
-                __DIR__.'/Domain/Hub/resources/views' => resource_path('views/vendor/lunar-api-reviews'),
-            ], 'views');
-        }
-    }
+    protected $root = __DIR__.'/..';
 
     /**
      * Register the application services.
      */
-    public function register()
+    public function register(): void
     {
-        // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/lunar-api-reviews.php', 'lunar-api-reviews');
+        $this->registerConfig();
+
+        $this->registerSchemas();
 
         $this->booting(function () {
             $this->registerPolicies();
         });
 
         $this->registerDynamicRelations();
+
         $this->extendSchemas();
     }
 
+    /**
+     * Bootstrap the application services.
+     */
+    public function boot(): void
+    {
+        $this->loadMigrationsFrom("{$this->root}/database/migrations");
+        $this->loadViewsFrom(__DIR__.'/Domain/Hub/resources/views', 'lunar-api-reviews');
+        $this->loadRoutesFrom("{$this->root}/routes/api.php");
+
+        Livewire::component('lunar-api-reviews::reviews-slot', ReviewsSlot::class);
+
+        Slot::register('product.show', ReviewsSlot::class);
+
+        if ($this->app->runningInConsole()) {
+            $this->publishConfig();
+            $this->publishViews();
+        }
+    }
+
+    /**
+     * Register config files.
+     */
+    protected function registerConfig(): void
+    {
+        $this->mergeConfigFrom(
+            "{$this->root}/config/reviews.php",
+            'lunar-api.reviews',
+        );
+    }
+
+    /**
+     * Publish config files.
+     */
+    protected function publishConfig(): void
+    {
+        $this->publishes([
+            "{$this->root}/config/reviews.php" => config_path('lunar-api.reviews.php'),
+        ], 'lunar-api-reviews');
+    }
+
+    /**
+     * Register schemas.
+     */
+    public function registerSchemas(): void
+    {
+        SchemaManifestFacade::registerSchema(ReviewSchema::class);
+    }
+
+    /**
+     * Publish views.
+     */
+    protected function publishViews(): void
+    {
+        $this->publishes([
+            __DIR__.'/Domain/Hub/resources/views' => resource_path('views/vendor/lunar-api-reviews'),
+        ], 'views');
+    }
+
+    /**
+     * Register dynamic relations.
+     */
     protected function registerDynamicRelations(): void
     {
         ProductVariant::resolveRelationUsing('reviews', function ($model) {
@@ -93,24 +128,37 @@ class LunarReviewsServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Extend schemas.
+     */
     protected function extendSchemas(): void
     {
+        /** @var SchemaManifest $schemaManifest */
         $schemaManifest = $this->app->make(SchemaManifest::class);
+
+        /** @var ResourceManifest $resourceManifest */
         $resourceManifest = $this->app->make(ResourceManifest::class);
 
         /** @var SchemaExtension $productSchemaExtenstion */
-        $productSchemaExtenstion = $schemaManifest::for(ProductSchema::class);
+        $productSchemaExtenstion = $schemaManifest::extend(ProductSchema::class);
 
         $productSchemaExtenstion
-            ->setIncludePaths(['reviews', 'variants.reviews'])
+            ->setIncludePaths([
+                'reviews',
+                'variants.reviews',
+            ])
             ->setFields([
                 HasManyThrough::make('reviews'),
             ])
-            ->setShowRelated(['reviews'])
-            ->setShowRelationship(['reviews']);
+            ->setShowRelated([
+                'reviews',
+            ])
+            ->setShowRelationship([
+                'reviews',
+            ]);
 
         /** @var ResourceExtension $productResourceExtension */
-        $productResourceExtension = $resourceManifest::for(ProductResource::class);
+        $productResourceExtension = $resourceManifest::extend(ProductResource::class);
 
         $productResourceExtension
             ->setRelationships(fn ($resource) => [
@@ -118,18 +166,24 @@ class LunarReviewsServiceProvider extends ServiceProvider
             ]);
 
         /** @var SchemaExtension $productVariantSchemaExtenstion */
-        $productVariantSchemaExtenstion = $schemaManifest::for(ProductVariantSchema::class);
+        $productVariantSchemaExtenstion = $schemaManifest::extend(ProductVariantSchema::class);
 
         $productVariantSchemaExtenstion
-            ->setIncludePaths(['reviews'])
+            ->setIncludePaths([
+                'reviews',
+            ])
             ->setFields([
                 HasMany::make('reviews'),
             ])
-            ->setShowRelated(['reviews'])
-            ->setShowRelationship(['reviews']);
+            ->setShowRelated([
+                'reviews',
+            ])
+            ->setShowRelationship([
+                'reviews',
+            ]);
 
         /** @var ResourceExtension $productVariantResourceExtension */
-        $productVariantResourceExtension = $resourceManifest::for(ProductVariantResource::class);
+        $productVariantResourceExtension = $resourceManifest::extend(ProductVariantResource::class);
 
         $productVariantResourceExtension
             ->setRelationships(fn ($resource) => [
@@ -139,23 +193,13 @@ class LunarReviewsServiceProvider extends ServiceProvider
 
     /**
      * Register the application's policies.
-     *
-     * @return void
      */
-    public function registerPolicies()
+    public function registerPolicies(): void
     {
-        foreach ($this->policies() as $model => $policy) {
-            Gate::policy($model, $policy);
-        }
-    }
-
-    /**
-     * Get the policies defined on the provider.
-     *
-     * @return array<class-string, class-string>
-     */
-    public function policies()
-    {
-        return $this->policies;
+        DomainConfigCollection::fromConfig('lunar-api.reviews.domains')
+            ->getPolicies()
+            ->each(
+                fn (string $policy, string $model) => Gate::policy($model, $policy),
+            );
     }
 }
