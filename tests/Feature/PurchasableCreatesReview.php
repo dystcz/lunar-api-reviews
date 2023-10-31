@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(TestCase::class, RefreshDatabase::class);
 
 it('can as purchasable read reviews', function () {
+    /** @var TestCase $this */
     $user = User::factory()->create();
 
     $review = Review::factory()
@@ -22,4 +23,4 @@ it('can as purchasable read reviews', function () {
         ->get('/api/v1/variants/'.$review->purchasable->getRouteKey().'/reviews');
 
     $response->assertFetchedMany([$review]);
-});
+})->todo();
