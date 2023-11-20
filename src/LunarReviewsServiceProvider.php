@@ -35,6 +35,11 @@ class LunarReviewsServiceProvider extends ServiceProvider
     {
         $this->registerConfig();
 
+        $this->loadTranslationsFrom(
+            "{$this->root}/lang",
+            'lunar-api-reviews',
+        );
+
         $this->registerSchemas();
 
         $this->booting(function () {
@@ -61,6 +66,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishConfig();
+            $this->publishTranslations();
             $this->publishViews();
         }
     }
@@ -84,6 +90,16 @@ class LunarReviewsServiceProvider extends ServiceProvider
         $this->publishes([
             "{$this->root}/config/reviews.php" => config_path('lunar-api.reviews.php'),
         ], 'lunar-api-reviews');
+    }
+
+    /**
+     * Publish translations.
+     */
+    protected function publishTranslations(): void
+    {
+        $this->publishes([
+            __DIR__.'/../lang' => $this->app->langPath('vendor/lunar-api'),
+        ], 'lunar-api-reviews.translations');
     }
 
     /**
