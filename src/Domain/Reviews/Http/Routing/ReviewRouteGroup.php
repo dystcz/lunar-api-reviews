@@ -21,7 +21,6 @@ class ReviewRouteGroup extends RouteGroup
      */
     public function routes(string $prefix = null, array|string $middleware = []): void
     {
-
         JsonApiRoute::server('v1')
             ->prefix('v1')
             ->resources(function ($server) {
