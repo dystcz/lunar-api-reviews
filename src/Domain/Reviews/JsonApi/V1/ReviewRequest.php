@@ -48,9 +48,15 @@ class ReviewRequest extends ResourceRequest
     public function messages(): array
     {
         return [
-            // 'email.required' => __('lunar-api-product-notifications::validations.store_product_notification.email.required'),
-            // 'email.email' => __('lunar-api-product-notifications::validations.store_product_notification.email.email'),
-            // 'email.unique' => __('lunar-api-product-notifications::validations.store_product_notification.email.unique'),
+            'rating.required' => __('lunar-api-reviews::validations.store_product_notification.rating.required'),
+            'rating.integer' => __('lunar-api-reviews::validations.store_product_notification.rating.integer'),
+            'rating.min' => __('lunar-api-reviews::validations.store_product_notification.rating.min'),
+            'rating.max' => __('lunar-api-reviews::validations.store_product_notification.rating.max'),
+            'comment.string' => __('lunar-api-reviews::validations.store_product_notification.comment.string'),
+            'purchasable_id.required' => __('lunar-api-reviews::validations.store_product_notification.purchasable_id.required'),
+            'purchasable_id.integer' => __('lunar-api-reviews::validations.store_product_notification.purchasable_id.integer'),
+            'purchasable_type.required' => __('lunar-api-reviews::validations.store_product_notification.purchasable_type.required'),
+            'purchasable_type.string' => __('lunar-api-reviews::validations.store_product_notification.purchasable_type.string'),
         ];
     }
 }
