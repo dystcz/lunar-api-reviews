@@ -11,6 +11,8 @@ use Dystcz\LunarApiReviews\Domain\Reviews\Http\Controllers\PublishReviewsControl
 use Dystcz\LunarApiReviews\Domain\Reviews\Http\Controllers\ReviewsController;
 use Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1\ReviewSchema;
 use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
+use LaravelJsonApi\Laravel\Routing\Relationships;
+use LaravelJsonApi\Laravel\Routing\ResourceRegistrar;
 
 class ReviewRouteGroup extends RouteGroup
 {
@@ -23,7 +25,7 @@ class ReviewRouteGroup extends RouteGroup
     {
         JsonApiRoute::server('v1')
             ->prefix('v1')
-            ->resources(function ($server) {
+            ->resources(function (ResourceRegistrar $server) {
                 $server->resource(ReviewSchema::type(), ReviewsController::class)
                     ->except('update');
 
@@ -35,7 +37,7 @@ class ReviewRouteGroup extends RouteGroup
                     });
 
                 $server->resource(ProductSchema::type(), ProductsController::class)
-                    ->relationships(function ($relationships) {
+                    ->relationships(function (Relationships $relationships) {
                         $relationships->hasMany('reviews')->only('index')->readOnly();
                     })->only();
 
