@@ -4,7 +4,6 @@ namespace Dystcz\LunarApiReviews\Tests;
 
 use Dystcz\LunarApi\Base\Facades\SchemaManifestFacade;
 use Dystcz\LunarApiReviews\Tests\Stubs\Lunar\TestUrlGenerator;
-use Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants\ProductVariantRouteGroup;
 use Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants\ProductVariantSchema;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\UserSchema;
@@ -23,7 +22,11 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
-        Config::set('auth.providers.users.model', User::class);
+        Config::set('auth.providers.users', [
+            'driver' => 'eloquent',
+            'model' => User::class,
+        ]);
+
         Config::set('lunar.urls.generator', TestUrlGenerator::class);
 
         activity()->disableLogging();
@@ -86,14 +89,6 @@ abstract class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix' => '',
         ]);
-
-        Config::set(
-            'lunar-api.reviews.domains.product_variants',
-            [
-                'routes' => ProductVariantRouteGroup::class,
-                'schema' => ProductVariantSchema::class,
-            ]
-        );
 
         /**
          * Schema configuration.
