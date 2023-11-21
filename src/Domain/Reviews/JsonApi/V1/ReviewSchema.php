@@ -3,6 +3,7 @@
 namespace Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1;
 
 use Dystcz\LunarApi\Domain\JsonApi\Eloquent\Schema;
+use Dystcz\LunarApiReviews\Domain\Reviews\Builders\ReviewBuilder;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ class ReviewSchema extends Schema
      */
     public function indexQuery(?Request $request, Builder $query): Builder
     {
+        /** @var ReviewBuilder $query */
         return $query->published();
     }
 
