@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(TestCase::class, RefreshDatabase::class);
 
-it('can create a review for a Product', function () {
+it('can create a review for a product', function () {
     /** @var TestCase $this */
 
     /** @var User $user */
@@ -52,7 +52,7 @@ it('can create a review for a Product', function () {
     ]);
 });
 
-it('can create a review for a ProductVariant', function () {
+it('can create a review for a product variant', function () {
     /** @var TestCase $this */
 
     /** @var User $user */
