@@ -40,6 +40,8 @@ class ReviewSchema extends Schema
         return [
             ID::make(),
 
+            Str::make('name'),
+
             Str::make('comment'),
 
             Number::make('rating')->sortable(),
