@@ -50,7 +50,7 @@ class ReviewSchema extends Schema
 
             DateTime::make('published_at')
                 ->serializeUsing(
-                    static fn ($value) => $value->format('Y-m-d H:i:s'),
+                    static fn ($value) => $value?->format('Y-m-d H:i:s'),
                 )
                 ->sortable(),
 
