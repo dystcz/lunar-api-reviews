@@ -30,20 +30,19 @@ class ReviewRouteGroup extends RouteGroup
                     ->except('update');
 
                 $server->resource(ReviewSchema::type(), PublishReviewsController::class)
-                    ->only('')
                     ->actions('-actions', function ($actions) {
                         $actions->withId()->post('publish');
                         $actions->withId()->delete('unpublish');
-                    });
+                    })->only();
 
                 $server->resource(ProductSchema::type(), ProductsController::class)
                     ->relationships(function (Relationships $relationships) {
-                        $relationships->hasMany('reviews')->only('index')->readOnly();
+                        $relationships->hasMany('reviews')->only('index');
                     })->only();
 
                 $server->resource(ProductVariantSchema::type(), ProductVariantsController::class)
                     ->relationships(function ($relationships) {
-                        $relationships->hasMany('reviews')->only('index')->readOnly();
+                        $relationships->hasMany('reviews')->only('index');
                     })->only();
             });
     }

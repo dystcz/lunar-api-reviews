@@ -4,7 +4,6 @@ namespace Dystcz\LunarApiReviews\Tests;
 
 use Dystcz\LunarApi\Base\Facades\SchemaManifestFacade;
 use Dystcz\LunarApiReviews\Tests\Stubs\Lunar\TestUrlGenerator;
-use Dystcz\LunarApiReviews\Tests\Stubs\ProductVariants\ProductVariantSchema;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\UserSchema;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -94,7 +93,7 @@ abstract class TestCase extends Orchestra
          * Schema configuration.
          */
         SchemaManifestFacade::registerSchema(UserSchema::class);
-        SchemaManifestFacade::registerSchema(ProductVariantSchema::class);
+        // SchemaManifestFacade::registerSchema(ProductVariantSchema::class);
     }
 
     /**

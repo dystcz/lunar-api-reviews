@@ -9,8 +9,8 @@ use Lunar\Base\Traits\LunarUser;
 
 class User extends Authenticatable
 {
-    use LunarUser;
     use HasFactory;
+    use LunarUser;
     use Notifiable;
 
     /**

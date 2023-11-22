@@ -163,9 +163,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 'reviews',
                 'variants.reviews',
             ])
-            ->setFields([
-                HasManyThrough::make('reviews'),
-            ])
+            ->setFields([fn () => HasManyThrough::make('reviews')])
             ->setShowRelated([
                 'reviews',
             ])
@@ -189,7 +187,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 'reviews',
             ])
             ->setFields([
-                HasMany::make('reviews'),
+                fn () => HasMany::make('reviews'),
             ])
             ->setShowRelated([
                 'reviews',

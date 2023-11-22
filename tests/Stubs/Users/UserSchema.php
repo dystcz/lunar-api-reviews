@@ -9,15 +9,11 @@ class UserSchema extends Schema
 {
     /**
      * The model the schema corresponds to.
-     *
-     * @var string
      */
     public static string $model = User::class;
 
     /**
      * Get the resource fields.
-     *
-     * @return array
      */
     public function fields(): array
     {
@@ -28,8 +24,6 @@ class UserSchema extends Schema
 
     /**
      * Get the JSON:API resource type.
-     *
-     * @return string
      */
     public static function type(): string
     {
