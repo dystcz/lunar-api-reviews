@@ -12,12 +12,14 @@ return new class extends Migration
             $table->id();
 
             $table->morphs('purchasable');
-            $table->userForeignKey();
+
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->tinyInteger('rating')->unsigned();
             $table->text('comment')->nullable();
 
-            $table->dateTime('published_at')->useCurrent()->nullable();
+            $table->dateTime('published_at')->nullable();
 
             $table->timestamps();
 
