@@ -163,7 +163,11 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 'reviews',
                 'variants.reviews',
             ])
-            ->setFields([fn () => HasManyThrough::make('reviews')])
+            ->setFields([
+                fn () => HasManyThrough::make('reviews')->serializeUsing(
+                    static fn ($relation) => $relation->withoutLinks(),
+                ),
+            ])
             ->setShowRelated([
                 'reviews',
             ])
@@ -187,7 +191,9 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 'reviews',
             ])
             ->setFields([
-                fn () => HasMany::make('reviews'),
+                fn () => HasMany::make('reviews')->serializeUsing(
+                    static fn ($relation) => $relation->withoutLinks(),
+                ),
             ])
             ->setShowRelated([
                 'reviews',
