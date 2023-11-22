@@ -22,6 +22,13 @@ class ReviewSchema extends Schema
     public static string $model = Review::class;
 
     /**
+     * {@inheritDoc}
+     */
+    protected array $with = [
+        'user',
+    ];
+
+    /**
      * Build an index query for this resource.
      */
     public function indexQuery(?Request $request, Builder $query): Builder
@@ -40,7 +47,10 @@ class ReviewSchema extends Schema
         return [
             ID::make(),
 
-            Str::make('name'),
+            Str::make('name')
+                ->extractUsing(
+                    fn ($model, $column, $value) => $model->user?->name,
+                ),
 
             Str::make('comment'),
 
