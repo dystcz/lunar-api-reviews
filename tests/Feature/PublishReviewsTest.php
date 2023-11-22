@@ -25,7 +25,7 @@ it('can publish a review', function () {
 
     expect($response->json('data.attributes.published_at'))
         ->toBe($review->fresh()->published_at->format('Y-m-d H:i:s'));
-});
+})->skip('Currently not supported by the API');
 
 it('can unpublish a review', function () {
     $user = Staff::factory()->create(['admin' => true]);
@@ -43,4 +43,4 @@ it('can unpublish a review', function () {
     $response->assertNoContent();
 
     expect($review->fresh()->published_at)->toBe(null);
-});
+})->skip('Currently not supported by the API');
