@@ -3,6 +3,7 @@
 namespace Dystcz\LunarApiReviews\Tests;
 
 use Dystcz\LunarApi\Base\Facades\SchemaManifestFacade;
+use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Tests\Stubs\Lunar\TestUrlGenerator;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\UserSchema;
@@ -11,6 +12,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Config;
 use LaravelJsonApi\Testing\MakesJsonApiRequests;
 use LaravelJsonApi\Testing\TestExceptionHandler;
+use Lunar\Models\Product;
+use Lunar\Models\ProductVariant;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
@@ -88,6 +91,14 @@ abstract class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix' => '',
         ]);
+
+        ProductVariant::resolveRelationUsing('reviews', function ($model) {
+            return $model->morphMany(Review::class, 'purchasable');
+        });
+
+        Product::resolveRelationUsing('reviews', function ($model) {
+            return $model->morphMany(Review::class, 'purchasable');
+        });
 
         /**
          * Schema configuration.
