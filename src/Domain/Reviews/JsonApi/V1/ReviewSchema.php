@@ -61,7 +61,7 @@ class ReviewSchema extends Schema
 
             Str::make('name')
                 ->extractUsing(
-                    fn ($model, $column, $value) => $model->user?->name,
+                    fn ($model, $column, $value) => $model->user?->fullName ?? $model->user?->name ?? $value,
                 ),
 
             Str::make('comment'),
