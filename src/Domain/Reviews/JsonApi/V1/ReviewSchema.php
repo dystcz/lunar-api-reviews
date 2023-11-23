@@ -13,6 +13,7 @@ use LaravelJsonApi\Eloquent\Fields\Number;
 use LaravelJsonApi\Eloquent\Fields\Relations\BelongsTo;
 use LaravelJsonApi\Eloquent\Fields\Relations\MorphTo;
 use LaravelJsonApi\Eloquent\Fields\Str;
+use LaravelJsonApi\Eloquent\Sorting\SortColumn;
 
 class ReviewSchema extends Schema
 {
@@ -32,7 +33,7 @@ class ReviewSchema extends Schema
     /**
      * Default sort.
      */
-    protected $defaultSort = '-published_at';
+    protected $defaultSort = '-id';
 
     /**
      * {@inheritDoc}
@@ -94,6 +95,20 @@ class ReviewSchema extends Schema
                 ->types('products', 'variants'),
 
             ...parent::fields(),
+        ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function sortables(): iterable
+    {
+        return [
+            ...parent::sortables(),
+
+            SortColumn::make('id', 'id'),
+
+            SortColumn::make('publishedAt', 'published_at'),
         ];
     }
 
