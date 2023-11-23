@@ -133,14 +133,6 @@ class LunarReviewsServiceProvider extends ServiceProvider
      */
     protected function registerDynamicRelations(): void
     {
-        ProductVariant::resolveRelationUsing('reviews', function ($model) {
-            return $model->morphMany(Review::class, 'purchasable');
-        });
-
-        Product::resolveRelationUsing('reviews', function ($model) {
-            return $model->morphMany(Review::class, 'purchasable');
-        });
-
         Product::resolveRelationUsing('variantReviews', function ($model) {
             return $model
                 ->hasManyThrough(
@@ -174,10 +166,10 @@ class LunarReviewsServiceProvider extends ServiceProvider
             ->setIncludePaths([
                 'reviews',
                 'reviews.user',
-                'variantReviews',
-                'variantReviews.user',
+                'reviews.user.customers',
                 'variants.reviews',
                 'variants.reviews.user',
+                'variants.reviews.user.customers',
             ])
             ->setFields([
                 fn () => HasManyThrough::make('reviews')->serializeUsing(
@@ -206,6 +198,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
             ->setIncludePaths([
                 'reviews',
                 'reviews.user',
+                'reviews.user.customers',
             ])
             ->setFields([
                 fn () => HasMany::make('reviews')->serializeUsing(
