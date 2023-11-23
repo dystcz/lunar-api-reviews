@@ -6,6 +6,9 @@ use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Review>
+ */
 class ReviewFactory extends Factory
 {
     protected $model = Review::class;
