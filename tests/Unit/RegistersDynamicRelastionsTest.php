@@ -9,13 +9,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(TestCase::class, RefreshDatabase::class);
 
-test('Product has reviews relation', function () {
+test('product has reviews relation', function () {
     $model = new Product();
 
-    expect($model->reviews())->toBeInstanceOf(HasManyThrough::class);
+    expect($model->reviews())->toBeInstanceOf(MorphMany::class);
 });
 
-test('ProductVariant has reviews relation', function () {
+test('product has variantReviews relation', function () {
+    $model = new Product();
+
+    expect($model->variantReviews())->toBeInstanceOf(HasManyThrough::class);
+});
+
+test('product variant has reviews relation', function () {
     $model = new ProductVariant();
 
     expect($model->reviews())->toBeInstanceOf(MorphMany::class);
