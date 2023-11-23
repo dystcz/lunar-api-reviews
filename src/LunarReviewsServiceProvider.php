@@ -12,9 +12,9 @@ use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductSchema;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantResource;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantSchema;
 use Dystcz\LunarApi\Support\Config\Collections\DomainConfigCollection;
-use Dystcz\LunarApiReviews\Domain\Hub\Components\Slots\ReviewsSlot;
 use Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1\ReviewSchema;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
+use Dystcz\LunarApiReviews\Domain\Reviews\Observers\ReviewObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
@@ -60,9 +60,17 @@ class LunarReviewsServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/Domain/Hub/resources/views', 'lunar-api-reviews');
         $this->loadRoutesFrom("{$this->root}/routes/api.php");
 
-        Livewire::component('lunar-api-reviews::reviews-slot', ReviewsSlot::class);
+        Livewire::component(
+            'lunar-api-reviews::reviews-slot',
+            \Dystcz\LunarApiReviews\Domain\Hub\Components\Slots\ReviewsSlot::class,
+        );
 
-        Slot::register('product.show', ReviewsSlot::class);
+        Slot::register(
+            'product.show',
+            \Dystcz\LunarApiReviews\Domain\Hub\Components\Slots\ReviewsSlot::class,
+        );
+
+        \Dystcz\LunarApiReviews\Domain\Reviews\Models\Review::observe(ReviewObserver::class);
 
         if ($this->app->runningInConsole()) {
             $this->publishConfig();
@@ -130,6 +138,10 @@ class LunarReviewsServiceProvider extends ServiceProvider
         });
 
         Product::resolveRelationUsing('reviews', function ($model) {
+            return $model->morphMany(Review::class, 'purchasable');
+        });
+
+        Product::resolveRelationUsing('variantReviews', function ($model) {
             return $model
                 ->hasManyThrough(
                     Review::class,
