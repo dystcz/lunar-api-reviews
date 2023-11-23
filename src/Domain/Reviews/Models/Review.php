@@ -4,10 +4,10 @@ namespace Dystcz\LunarApiReviews\Domain\Reviews\Models;
 
 use Dystcz\LunarApiReviews\Domain\Reviews\Builders\ReviewBuilder;
 use Dystcz\LunarApiReviews\Domain\Reviews\Factories\ReviewFactory;
+use Dystcz\LunarApiReviews\Domain\Reviews\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Lunar\Base\BaseModel;
 
@@ -31,11 +31,12 @@ class Review extends BaseModel
         'published_at' => 'datetime',
     ];
 
+    /**
+     * The "booted" method of the model.
+     */
     protected static function booted(): void
     {
-        static::creating(static function (self $review): void {
-            $review->user_id = $review->user_id ?: Auth::user()?->id;
-        });
+        static::addGlobalScope(new PublishedScope);
     }
 
     /**
