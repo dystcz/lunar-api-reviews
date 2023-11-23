@@ -37,19 +37,19 @@ class ReviewRouteGroup extends RouteGroup
                         $actions->withId()->delete('unpublish');
                     })->only();
 
-                // WARNING: These routes do not get registered
+                $server
+                    ->resource(ProductSchema::type(), ProductsController::class)
+                    ->relationships(function (Relationships $relationships) {
+                        $relationships->hasMany('reviews')
+                            ->readOnly();
+                    })->only();
 
-                // $server
-                //     ->resource(ProductSchema::type(), ProductsController::class)
-                //     ->relationships(function (Relationships $relationships) {
-                //         $relationships->hasMany('reviews')->only('index');
-                //     })->only();
-                //
-                // $server
-                //     ->resource(ProductVariantSchema::type(), ProductVariantsController::class)
-                //     ->relationships(function ($relationships) {
-                //         $relationships->hasMany('reviews')->only('index');
-                //     })->only();
+                $server
+                    ->resource(ProductVariantSchema::type(), ProductVariantsController::class)
+                    ->relationships(function (Relationships $relationships) {
+                        $relationships->hasMany('reviews')
+                            ->readOnly();
+                    })->only();
             });
     }
 }
