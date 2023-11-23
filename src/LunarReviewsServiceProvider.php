@@ -173,7 +173,11 @@ class LunarReviewsServiceProvider extends ServiceProvider
         $productSchemaExtenstion
             ->setIncludePaths([
                 'reviews',
+                'reviews.user',
+                'variantReviews',
+                'variantReviews.user',
                 'variants.reviews',
+                'variants.reviews.user',
             ])
             ->setFields([
                 fn () => HasManyThrough::make('reviews')->serializeUsing(
@@ -201,6 +205,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
         $productVariantSchemaExtenstion
             ->setIncludePaths([
                 'reviews',
+                'reviews.user',
             ])
             ->setFields([
                 fn () => HasMany::make('reviews')->serializeUsing(
