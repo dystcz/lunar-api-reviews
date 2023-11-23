@@ -20,6 +20,8 @@ return [
                 // 'unpublish' => Dystcz\LunarApiReviews\Domain\Reviews\Http\Controllers\PublishReviewsController::class,
             ],
             'settings' => [
+                'include_unpublished_auth_user_reviews' => true,
+                'auth_required' => true,
                 'auth_middleware' => ['auth'],
             ],
         ],
