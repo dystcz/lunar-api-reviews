@@ -18,8 +18,13 @@ class ReviewsController extends Controller
 
     public function __construct()
     {
-        $this
-            ->middleware(Config::get('lunar-api.reviews.domains.reviews.settings.auth_middleware', ['auth']))
-            ->only('store');
+        if (Config::get('lunar-api.reviews.domains.reviews.settings.auth_required', true)) {
+            $this
+                ->middleware(Config::get(
+                    'lunar-api.reviews.domains.reviews.settings.auth_middleware',
+                    ['auth'],
+                ))
+                ->only('store');
+        }
     }
 }
