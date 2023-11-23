@@ -30,6 +30,11 @@ class ReviewSchema extends Schema
     ];
 
     /**
+     * Default sort.
+     */
+    protected $defaultSort = '-published_at';
+
+    /**
      * {@inheritDoc}
      */
     public function includePaths(): iterable
