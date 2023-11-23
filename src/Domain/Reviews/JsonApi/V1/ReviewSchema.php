@@ -26,6 +26,7 @@ class ReviewSchema extends Schema
      */
     protected array $with = [
         'user',
+        'user.customers',
     ];
 
     /**
@@ -35,6 +36,7 @@ class ReviewSchema extends Schema
     {
         return [
             'user',
+            'user.customers',
 
             ...parent::includePaths(),
         ];
@@ -61,7 +63,7 @@ class ReviewSchema extends Schema
 
             Str::make('name')
                 ->extractUsing(
-                    fn ($model, $column, $value) => $model->user?->fullName ?? $model->user?->name ?? $value,
+                    fn ($model, $column, $value) => $model->user?->customers->first()?->name ?? $value,
                 ),
 
             Str::make('comment'),
