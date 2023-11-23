@@ -29,6 +29,18 @@ class ReviewSchema extends Schema
     ];
 
     /**
+     * {@inheritDoc}
+     */
+    public function includePaths(): iterable
+    {
+        return [
+            'user',
+
+            ...parent::includePaths(),
+        ];
+    }
+
+    /**
      * Build an index query for this resource.
      */
     public function indexQuery(?Request $request, Builder $query): Builder
