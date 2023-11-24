@@ -28,7 +28,7 @@ class ReviewRouteGroup extends RouteGroup
             ->resources(function (ResourceRegistrar $server) {
                 $server
                     ->resource(ReviewSchema::type(), ReviewsController::class)
-                    ->except('update');
+                    ->only('index', 'show', 'store');
 
                 $server
                     ->resource(ReviewSchema::type(), PublishReviewsController::class)
