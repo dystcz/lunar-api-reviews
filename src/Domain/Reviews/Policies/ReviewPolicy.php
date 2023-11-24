@@ -39,7 +39,7 @@ class ReviewPolicy
      */
     public function update(Authenticatable $user, Review $review): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -47,7 +47,7 @@ class ReviewPolicy
      */
     public function delete(Authenticatable $user, Review $review): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -55,7 +55,7 @@ class ReviewPolicy
      */
     public function publish(Authenticatable $user, Review $review): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -63,6 +63,6 @@ class ReviewPolicy
      */
     public function unpublish(Authenticatable $user, Review $review): bool
     {
-        return false;
+        return true;
     }
 }
