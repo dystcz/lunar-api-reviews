@@ -17,6 +17,7 @@ use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Domain\Reviews\Observers\ReviewObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use LaravelJsonApi\Eloquent\Fields\Number;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasManyThrough;
 use Livewire\Livewire;
@@ -163,6 +164,9 @@ class LunarReviewsServiceProvider extends ServiceProvider
         $productSchemaExtenstion = $schemaManifest::extend(ProductSchema::class);
 
         $productSchemaExtenstion
+            ->setWith([
+                'reviews',
+            ])
             ->setIncludePaths([
                 'reviews',
                 'reviews.user',
@@ -172,6 +176,7 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 'variants.reviews.user.customers',
             ])
             ->setFields([
+                Number::make('rating', 'review_rating'),
                 fn () => HasManyThrough::make('reviews')->serializeUsing(
                     static fn ($relation) => $relation->withoutLinks(),
                 ),
