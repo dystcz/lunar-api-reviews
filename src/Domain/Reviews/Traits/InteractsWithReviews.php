@@ -34,8 +34,6 @@ trait InteractsWithReviews
                 /** @var ReviewBuilder $reviewBuilder */
                 $reviewBuilder = $this->reviews();
 
-                ray($reviewBuilder);
-
                 return $reviewBuilder->avg('rating');
             }
         );
