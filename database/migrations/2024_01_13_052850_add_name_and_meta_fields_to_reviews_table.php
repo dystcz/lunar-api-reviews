@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::table($this->prefix.'reviews', function (Blueprint $table) {
             $table->string('name')->nullable()->after('user_id');
             $table->json('meta')->nullable()->after('comment');
-
-            $table->dropForeign(['user_id']);
         });
     }
 
@@ -27,8 +25,6 @@ return new class extends Migration
         Schema::table($this->prefix.'reviews', function (Blueprint $table) {
             $table->dropColumn('name');
             $table->dropColumn('meta');
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 };
