@@ -8,6 +8,11 @@ return [
         'max' => 'Rating may not be greater than 5.',
     ],
 
+    'name' => [
+        'required' => 'Please enter your name.',
+        'string' => 'Name must be a string.',
+    ],
+
     'comment' => [
         'string' => 'Comment must be a string.',
     ],

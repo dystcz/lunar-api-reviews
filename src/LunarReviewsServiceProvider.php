@@ -12,6 +12,7 @@ use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductSchema;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantResource;
 use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantSchema;
 use Dystcz\LunarApi\Support\Config\Collections\DomainConfigCollection;
+use Dystcz\LunarApiReviews\Domain\Hub\Components\Slots\ReviewsSlot;
 use Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1\ReviewSchema;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Domain\Reviews\Observers\ReviewObserver;
@@ -63,15 +64,15 @@ class LunarReviewsServiceProvider extends ServiceProvider
 
         Livewire::component(
             'lunar-api-reviews::reviews-slot',
-            \Dystcz\LunarApiReviews\Domain\Hub\Components\Slots\ReviewsSlot::class,
+            ReviewsSlot::class,
         );
 
         Slot::register(
             'product.show',
-            \Dystcz\LunarApiReviews\Domain\Hub\Components\Slots\ReviewsSlot::class,
+            ReviewsSlot::class,
         );
 
-        \Dystcz\LunarApiReviews\Domain\Reviews\Models\Review::observe(ReviewObserver::class);
+        Review::observe(ReviewObserver::class);
 
         if ($this->app->runningInConsole()) {
             $this->publishConfig();

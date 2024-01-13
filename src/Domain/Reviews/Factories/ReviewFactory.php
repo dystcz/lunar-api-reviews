@@ -18,7 +18,11 @@ class ReviewFactory extends Factory
         return [
             'user_id' => User::factory(),
             'rating' => $this->faker->numberBetween(1, 5),
+            'name' => $this->faker->name,
             'comment' => $this->faker->text(100),
+            'meta' => [
+                'foo' => 'bar',
+            ],
         ];
     }
 }
