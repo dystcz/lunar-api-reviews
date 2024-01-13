@@ -2,6 +2,7 @@
 
 namespace Dystcz\LunarApiReviews\Domain\Hub\Components\Slots;
 
+use Carbon\Carbon;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -50,7 +51,7 @@ class ReviewsSlot extends Component implements AbstractSlot
 
     public function toggle(Review $review): void
     {
-        $review->update(['published_at' => $review->published_at ? null : now()]);
+        $review->update(['published_at' => $review->published_at ? null : Carbon::now()]);
 
         $this->setPage($this->page);
     }

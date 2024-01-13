@@ -7,8 +7,8 @@ use Dystcz\LunarApiReviews\Domain\Reviews\Builders\ReviewBuilder;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use LaravelJsonApi\Eloquent\Fields\ArrayHash;
 use LaravelJsonApi\Eloquent\Fields\DateTime;
-use LaravelJsonApi\Eloquent\Fields\ID;
 use LaravelJsonApi\Eloquent\Fields\Number;
 use LaravelJsonApi\Eloquent\Fields\Relations\BelongsTo;
 use LaravelJsonApi\Eloquent\Fields\Relations\MorphTo;
@@ -65,20 +65,23 @@ class ReviewSchema extends Schema
     public function fields(): iterable
     {
         return [
-            ID::make(),
+            $this->idField(),
 
             Str::make('name')
                 ->extractUsing(
-                    fn ($model, $column, $value) => $model->user?->customers->first()?->name ?? $value,
+                    fn ($model, $column, $value) => $model->name,
                 ),
 
             Str::make('comment'),
 
-            Number::make('rating')->sortable(),
+            Number::make('rating')
+                ->sortable(),
 
             Number::make('purchasable_id'),
 
             Str::make('purchasable_type'),
+
+            ArrayHash::make('meta'),
 
             DateTime::make('published_at')
                 ->serializeUsing(

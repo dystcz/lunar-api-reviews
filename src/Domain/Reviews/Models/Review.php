@@ -5,6 +5,8 @@ namespace Dystcz\LunarApiReviews\Domain\Reviews\Models;
 use Dystcz\LunarApiReviews\Domain\Reviews\Builders\ReviewBuilder;
 use Dystcz\LunarApiReviews\Domain\Reviews\Factories\ReviewFactory;
 use Dystcz\LunarApiReviews\Domain\Reviews\Scopes\PublishedScope;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -18,16 +20,15 @@ class Review extends BaseModel
 {
     use HasFactory;
 
-    protected $fillable = [
-        'rating',
-        'comment',
-        'published_at',
-        'user_id',
-        'purchasable_id',
-        'purchasable_type',
-    ];
+    protected $guarded = [];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
     protected $casts = [
+        'meta' => AsArrayObject::class,
         'published_at' => 'datetime',
     ];
 
@@ -56,6 +57,16 @@ class Review extends BaseModel
     protected static function newFactory(): ReviewFactory
     {
         return ReviewFactory::new();
+    }
+
+    /**
+     * Get the name attribute.
+     */
+    public function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => $this->user?->customers->first()?->name ?? $value,
+        );
     }
 
     /**

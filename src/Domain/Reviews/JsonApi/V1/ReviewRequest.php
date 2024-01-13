@@ -2,6 +2,7 @@
 
 namespace Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1;
 
+use Illuminate\Support\Facades\Config;
 use LaravelJsonApi\Laravel\Http\Requests\ResourceRequest;
 use LaravelJsonApi\Validation\Rule as JsonApiRule;
 
@@ -14,16 +15,24 @@ class ReviewRequest extends ResourceRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'rating' => [
                 'required',
                 'integer',
                 'min:1',
                 'max:5',
             ],
+            'name' => [
+                'nullable',
+                'string',
+            ],
             'comment' => [
                 'nullable',
                 'string',
+            ],
+            'meta' => [
+                'nullable',
+                'array',
             ],
             'purchasable_id' => [
                 'required',
@@ -38,6 +47,12 @@ class ReviewRequest extends ResourceRequest
                 JsonApiRule::dateTime(),
             ],
         ];
+
+        if (Config::get('lunar-api.reviews.domains.reviews.settings.name_required', false)) {
+            $rules['name'] = ['required', ...$rules['name']];
+        }
+
+        return $rules;
     }
 
     /**
@@ -48,15 +63,17 @@ class ReviewRequest extends ResourceRequest
     public function messages(): array
     {
         return [
-            'rating.required' => __('lunar-api-reviews::validations.store_product_notification.rating.required'),
-            'rating.integer' => __('lunar-api-reviews::validations.store_product_notification.rating.integer'),
-            'rating.min' => __('lunar-api-reviews::validations.store_product_notification.rating.min'),
-            'rating.max' => __('lunar-api-reviews::validations.store_product_notification.rating.max'),
-            'comment.string' => __('lunar-api-reviews::validations.store_product_notification.comment.string'),
-            'purchasable_id.required' => __('lunar-api-reviews::validations.store_product_notification.purchasable_id.required'),
-            'purchasable_id.integer' => __('lunar-api-reviews::validations.store_product_notification.purchasable_id.integer'),
-            'purchasable_type.required' => __('lunar-api-reviews::validations.store_product_notification.purchasable_type.required'),
-            'purchasable_type.string' => __('lunar-api-reviews::validations.store_product_notification.purchasable_type.string'),
+            'rating.required' => __('lunar-api-reviews::validations.rating.required'),
+            'rating.integer' => __('lunar-api-reviews::validations.rating.integer'),
+            'rating.min' => __('lunar-api-reviews::validations.rating.min'),
+            'rating.max' => __('lunar-api-reviews::validations.rating.max'),
+            'name.required' => __('lunar-api-reviews::validations.name.required'),
+            'name.string' => __('lunar-api-reviews::validations.name.string'),
+            'comment.string' => __('lunar-api-reviews::validations.comment.string'),
+            'purchasable_id.required' => __('lunar-api-reviews::validations.purchasable_id.required'),
+            'purchasable_id.integer' => __('lunar-api-reviews::validations.surchasable_id.integer'),
+            'purchasable_type.required' => __('lunar-api-reviews::validations.purchasable_type.required'),
+            'purchasable_type.string' => __('lunar-api-reviews::validations.strchasable_type.string'),
         ];
     }
 }
