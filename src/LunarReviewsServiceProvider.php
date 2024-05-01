@@ -62,15 +62,16 @@ class LunarReviewsServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/Domain/Hub/resources/views', 'lunar-api-reviews');
         $this->loadRoutesFrom("{$this->root}/routes/api.php");
 
-        Livewire::component(
-            'lunar-api-reviews::reviews-slot',
-            ReviewsSlot::class,
-        );
-
-        Slot::register(
-            'product.show',
-            ReviewsSlot::class,
-        );
+        // TODO: Add slots to Filament
+        // Livewire::component(
+        //     'lunar-api-reviews::reviews-slot',
+        //     ReviewsSlot::class,
+        // );
+        //
+        // Slot::register(
+        //     'product.show',
+        //     ReviewsSlot::class,
+        // );
 
         Review::observe(ReviewObserver::class);
 
@@ -177,7 +178,13 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 'variants.reviews.user.customers',
             ])
             ->setFields([
-                Number::make('rating', 'review_rating'),
+                fn () => Number::make('rating', 'review_rating'),
+                fn () => Number::make('review_count')
+                    ->extractUsing(
+                        static fn ($model) => $model->relationLoaded('reviews')
+                            ? $model->reviews->count()
+                            : $model->reviews()->count(),
+                    ),
                 fn () => HasManyThrough::make('reviews')->serializeUsing(
                     static fn ($relation) => $relation->withoutLinks(),
                 ),
