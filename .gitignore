@@ -3,6 +3,7 @@ composer.phar
 .DS_Store
 /.idea
 .phpunit.result.cache
+.phpunit.cache
 .php-cs-fixer.cache
 /node_modules
 Session.vim
