@@ -62,15 +62,16 @@ class LunarReviewsServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/Domain/Hub/resources/views', 'lunar-api-reviews');
         $this->loadRoutesFrom("{$this->root}/routes/api.php");
 
-        Livewire::component(
-            'lunar-api-reviews::reviews-slot',
-            ReviewsSlot::class,
-        );
-
-        Slot::register(
-            'product.show',
-            ReviewsSlot::class,
-        );
+        // TODO: Add slots to Filament
+        // Livewire::component(
+        //     'lunar-api-reviews::reviews-slot',
+        //     ReviewsSlot::class,
+        // );
+        //
+        // Slot::register(
+        //     'product.show',
+        //     ReviewsSlot::class,
+        // );
 
         Review::observe(ReviewObserver::class);
 
