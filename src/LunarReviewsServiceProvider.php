@@ -177,7 +177,13 @@ class LunarReviewsServiceProvider extends ServiceProvider
                 'variants.reviews.user.customers',
             ])
             ->setFields([
-                Number::make('rating', 'review_rating'),
+                fn () => Number::make('rating', 'review_rating'),
+                fn () => Number::make('review_count')
+                    ->extractUsing(
+                        static fn ($model) => $model->relationLoaded('reviews')
+                            ? $model->reviews->count()
+                            : $model->reviews()->count(),
+                    ),
                 fn () => HasManyThrough::make('reviews')->serializeUsing(
                     static fn ($relation) => $relation->withoutLinks(),
                 ),
