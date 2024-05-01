@@ -108,6 +108,14 @@ abstract class TestCase extends Orchestra
     }
 
     /**
+     * Define database migrations.
+     */
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadLaravelMigrations();
+    }
+
+    /**
      * Resolve application HTTP exception handler implementation.
      */
     protected function resolveApplicationExceptionHandler($app): void
@@ -116,13 +124,5 @@ abstract class TestCase extends Orchestra
             ExceptionHandler::class,
             TestExceptionHandler::class
         );
-    }
-
-    /**
-     * Define database migrations.
-     */
-    protected function defineDatabaseMigrations(): void
-    {
-        $this->loadLaravelMigrations();
     }
 }
