@@ -21,10 +21,11 @@
   ],
   "require": {
     "php": "^8.2",
-    "dystcz/lunar-api": "^1.0.0-alpha",
+    "dystcz/lunar-api": "^1.0.0-beta.1",
     "illuminate/support": "^11.0"
   },
   "require-dev": {
+    "barryvdh/laravel-ide-helper": "^3.0",
     "laravel-json-api/testing": "^3.0",
     "laravel/pint": "^1.7",
     "mockery/mockery": "^1.5",

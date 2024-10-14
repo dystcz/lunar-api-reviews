@@ -3,6 +3,8 @@
 namespace Dystcz\LunarApiReviews\Domain\Reviews\JsonApi\V1;
 
 use Dystcz\LunarApi\Domain\JsonApi\Eloquent\Schema;
+use Dystcz\LunarApi\Domain\Products\JsonApi\V1\ProductSchema;
+use Dystcz\LunarApi\Domain\ProductVariants\JsonApi\V1\ProductVariantSchema;
 use Dystcz\LunarApiReviews\Domain\Reviews\Builders\ReviewBuilder;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
@@ -95,7 +97,10 @@ class ReviewSchema extends Schema
                 ),
 
             MorphTo::make('purchasable', 'reviews')
-                ->types('products', 'variants'),
+                ->types(
+                    ProductSchema::type(),
+                    ProductVariantSchema::type(),
+                ),
 
             ...parent::fields(),
         ];
@@ -111,15 +116,7 @@ class ReviewSchema extends Schema
 
             SortColumn::make('id', 'id'),
 
-            SortColumn::make('publishedAt', 'published_at'),
+            SortColumn::make('published_at', 'published_at'),
         ];
-    }
-
-    /**
-     * Get the JSON:API resource type.
-     */
-    public static function type(): string
-    {
-        return 'reviews';
     }
 }
