@@ -5,31 +5,34 @@ namespace Dystcz\LunarApiReviews\Tests;
 use Dystcz\LunarApi\Base\Facades\SchemaManifestFacade;
 use Dystcz\LunarApiReviews\Domain\Reviews\Models\Review;
 use Dystcz\LunarApiReviews\Tests\Stubs\Lunar\TestUrlGenerator;
-use Dystcz\LunarApiReviews\Tests\Stubs\Users\User;
 use Dystcz\LunarApiReviews\Tests\Stubs\Users\UserSchema;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 use Illuminate\Support\Facades\Config;
 use LaravelJsonApi\Testing\MakesJsonApiRequests;
 use LaravelJsonApi\Testing\TestExceptionHandler;
 use Lunar\Models\Product;
 use Lunar\Models\ProductVariant;
+use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
     use MakesJsonApiRequests;
+    use WithWorkbench;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        Config::set('auth.providers.users', [
-            'driver' => 'eloquent',
-            'model' => User::class,
-        ]);
-
         Config::set('lunar.urls.generator', TestUrlGenerator::class);
+
+        /**
+         * Schema configuration.
+         */
+        SchemaManifestFacade::registerSchema(UserSchema::class);
 
         activity()->disableLogging();
     }
@@ -42,9 +45,6 @@ abstract class TestCase extends Orchestra
         return [
             // Ray
             \Spatie\LaravelRay\RayServiceProvider::class,
-
-            // Spatie Permissions
-            \Spatie\Permission\PermissionServiceProvider::class,
 
             // Laravel JsonApi
             \LaravelJsonApi\Encoder\Neomerx\ServiceProvider::class,
@@ -59,12 +59,16 @@ abstract class TestCase extends Orchestra
             \Kalnoy\Nestedset\NestedSetServiceProvider::class,
             \Spatie\LaravelBlink\BlinkServiceProvider::class,
 
+            // Livewire
+            \Livewire\LivewireServiceProvider::class,
+
             // Lunar Api
             \Dystcz\LunarApi\LunarApiServiceProvider::class,
             \Dystcz\LunarApi\JsonApiServiceProvider::class,
 
-            // Livewire
-            \Livewire\LivewireServiceProvider::class,
+            // Hashids
+            \Vinkla\Hashids\HashidsServiceProvider::class,
+            \Dystcz\LunarApi\LunarApiHashidsServiceProvider::class,
 
             // Lunar Reviews
             \Dystcz\LunarApiReviews\LunarReviewsServiceProvider::class,
@@ -74,19 +78,28 @@ abstract class TestCase extends Orchestra
     /**
      * @param  Application  $app
      */
-    public function getEnvironmentSetUp($app): void
+    protected function defineEnvironment($app): void
     {
-        /**
-         * App configuration
-         */
-        Config::set('database.default', 'sqlite');
-        Config::set('database.migrations', 'migrations');
+        $app->useEnvironmentPath(__DIR__.'/..');
+        $app->bootstrapWith([LoadEnvironmentVariables::class]);
 
-        Config::set('database.connections.sqlite', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ]);
+        tap($app['config'], function (Repository $config) {
+            /**
+             * App configuration.
+             */
+            $config->set('auth.providers.users', [
+                'driver' => 'eloquent',
+                'model' => \Dystcz\LunarApiReviews\Tests\Stubs\Users\User::class,
+            ]);
+
+            $config->set('database.default', 'sqlite');
+            $config->set('database.migrations', 'migrations');
+            $config->set('database.connections.sqlite', [
+                'driver' => 'sqlite',
+                'database' => ':memory:',
+                'prefix' => '',
+            ]);
+        });
 
         ProductVariant::resolveRelationUsing('reviews', function ($model) {
             return $model->morphMany(Review::class, 'purchasable');
@@ -95,12 +108,6 @@ abstract class TestCase extends Orchestra
         Product::resolveRelationUsing('reviews', function ($model) {
             return $model->morphMany(Review::class, 'purchasable');
         });
-
-        /**
-         * Schema configuration.
-         */
-        SchemaManifestFacade::registerSchema(UserSchema::class);
-        // SchemaManifestFacade::registerSchema(ProductVariantSchema::class);
     }
 
     /**
@@ -109,6 +116,7 @@ abstract class TestCase extends Orchestra
     protected function defineDatabaseMigrations(): void
     {
         $this->loadLaravelMigrations();
+        // $this->loadMigrationsFrom(workbench_path('database/migrations'));
     }
 
     /**
