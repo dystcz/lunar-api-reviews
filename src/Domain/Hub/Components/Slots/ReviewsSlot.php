@@ -26,9 +26,7 @@ class ReviewsSlot extends Component implements AbstractSlot
         return 'reviews-slot';
     }
 
-    public function getSlotInitialValue(): void
-    {
-    }
+    public function getSlotInitialValue(): void {}
 
     public function getSlotPosition(): string
     {
@@ -40,9 +38,7 @@ class ReviewsSlot extends Component implements AbstractSlot
         return 'Reviews';
     }
 
-    public function updateSlotModel(): void
-    {
-    }
+    public function updateSlotModel(): void {}
 
     public function handleSlotSave($model, $data): void
     {
